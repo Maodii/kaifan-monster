@@ -1,0 +1,9 @@
+export class UserProfile {
+ displayName: string = '小怪朋友'; regionCode: string = ''; regionName: string = ''; avatarPreset: string = 'tomato'; avatarId: string = ''; bio: string = ''; dietGoal: string = '均衡饮食'; version: number = 1; updatedAt: string = '';
+}
+export class ProfilePatch {
+ version: number = 1; displayName: string = ''; regionCode?: string; avatarPreset: string = 'tomato'; bio: string = ''; dietGoal: string = '均衡饮食'; avatarMode: string = 'keep';
+}
+export class ProfileRegion { code: string; name: string; constructor(code: string,name: string) { this.code = code; this.name = name; } }
+export const PROFILE_REGIONS: ProfileRegion[] = [new ProfileRegion('110000','北京'),new ProfileRegion('120000','天津'),new ProfileRegion('130000','河北'),new ProfileRegion('140000','山西'),new ProfileRegion('150000','内蒙古'),new ProfileRegion('210000','辽宁'),new ProfileRegion('220000','吉林'),new ProfileRegion('230000','黑龙江'),new ProfileRegion('310000','上海'),new ProfileRegion('320000','江苏'),new ProfileRegion('330000','浙江'),new ProfileRegion('340000','安徽'),new ProfileRegion('350000','福建'),new ProfileRegion('360000','江西'),new ProfileRegion('370000','山东'),new ProfileRegion('410000','河南'),new ProfileRegion('420000','湖北'),new ProfileRegion('430000','湖南'),new ProfileRegion('440000','广东'),new ProfileRegion('450000','广西'),new ProfileRegion('460000','海南'),new ProfileRegion('500000','重庆'),new ProfileRegion('510000','四川'),new ProfileRegion('520000','贵州'),new ProfileRegion('530000','云南'),new ProfileRegion('540000','西藏'),new ProfileRegion('610000','陕西'),new ProfileRegion('620000','甘肃'),new ProfileRegion('630000','青海'),new ProfileRegion('640000','宁夏'),new ProfileRegion('650000','新疆'),new ProfileRegion('710000','台湾'),new ProfileRegion('810000','香港'),new ProfileRegion('820000','澳门')];
+export { cuisineForRegion } from './ProfileCore';

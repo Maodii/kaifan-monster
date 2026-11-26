@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+import ts from 'typescript';
+import { rankRecipes } from '../src/recommend';
+const coreCode=ts.transpileModule(readFileSync('../client/entry/src/main/ets/model/RecommendationCore.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+const core:{exports:Record<string,any>}={exports:{}};vm.runInNewContext(coreCode,{exports:core.exports,Date,Math,Number,String,Set,Map});
+const code=ts.transpileModule(readFileSync('../client/entry/src/main/ets/model/Models.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+const native:{exports:Record<string,any>}={exports:{}};vm.runInNewContext(code,{exports:native.exports,require:()=>core.exports,Date,Math,Number,String,Set,Map});const model=native.exports;
+const now=new Date(),day=(n:number)=>model.dateString(new Date(now.getFullYear(),now.getMonth(),now.getDate()+n));
+const foods=[{name:'青菜',quantity:.5,unit:'kg',expiryDate:day(0)},{name:'鸡蛋',quantity:6,unit:'个',expiryDate:day(12)},{name:'西红柿',quantity:4,unit:'个',expiryDate:day(-1)}];
+const recipes=[{id:'greens',name:'清炒青菜',taste:'清淡',ingredients:[{name:'青菜',quantity:300,unit:'g'}]},{id:'eggs',name:'蒸蛋',taste:'清淡',ingredients:[{name:'鸡蛋',quantity:2,unit:'个'}]},{id:'tomato',name:'番茄炒蛋',taste:'酸甜',ingredients:[{name:'鸡蛋',quantity:3,unit:'个'},{name:'西红柿',quantity:2,unit:'个'}]}];
+const server=rankRecipes(recipes,foods,[],[],'',7);const local=model.recommend(recipes,foods,[],'','',7);
+assert.deepEqual(server.map(r=>r.recipe.id),Array.from(local,(r:any)=>r.recipe.id));assert.equal(server[0].recipe.id,'greens');assert.equal(server[0].missing.length,0);assert.equal(server.find(r=>r.recipe.id==='tomato')!.missing[0].name,'西红柿');
+assert.equal(model.daysLeft({expiryDate:day(0)}),0);assert.equal(model.daysLeft({expiryDate:day(-1)}),-1);assert.equal(model.validDate('2026-02-30'),false);assert.equal(model.validDate('2028-02-29'),true);
+assert.equal(rankRecipes(recipes,foods,[],['鸡蛋'],'清淡',7).length,1);assert.equal(model.recommend(recipes,foods,[],'鸡蛋','清淡',7).length,1);
+const repeat=rankRecipes(recipes,foods,[{recipeId:'greens',date:now.toISOString()}],[],'',7);assert.equal(repeat[0].recipe.id,'greens');assert.equal(repeat[0].recent,true);
+assert.deepEqual(rankRecipes(recipes,foods,[],[],'',7),rankRecipes(recipes,foods,[],[],'',7));
+console.log('PASS native/backend deterministic rule parity / urgent-first / expired exclusion / kg-g / hard taste and exclusions / calendar days / invalid dates');
+
+const mergeCode=ts.transpileModule(readFileSync('../client/entry/src/main/ets/model/ConflictMerge.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+const mergeModule:{exports:Record<string,any>}={exports:{}};vm.runInNewContext(mergeCode,{exports:mergeModule.exports});
+const conflict={local:{operation:'upsert',payload:{id:'same',name:'鸡蛋',quantity:6,notes:'本机备注',localPhoto:'/private/local.jpg'}},server:{deleted:false,payload:{id:'changed',name:'鸡蛋',quantity:8,notes:'云端备注',localPhoto:'/other/path'}}};
+assert.equal(mergeModule.exports.mergeFields(conflict).length,2);const merged=mergeModule.exports.mergedPayload(conflict,['quantity','id','localPhoto']);assert.equal(merged.quantity,8);assert.equal(merged.notes,'本机备注');assert.equal(merged.id,'same');assert.equal(merged.localPhoto,'/private/local.jpg');assert.equal(conflict.local.payload.quantity,6);assert.equal(mergeModule.exports.mergeFields({...conflict,server:{...conflict.server,deleted:true}}).length,0);
+console.log('PASS explicit field merge / metadata and device-photo preservation / immutable source / deletion conflict excluded');
+
+const mealCode=ts.transpileModule(readFileSync('../client/entry/src/main/ets/model/MealRules.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+const mealModule:{exports:Record<string,any>}={exports:{}};vm.runInNewContext(mealCode,{exports:mealModule.exports,require:()=>model,Date,Math,Map,Array});const mealRules=mealModule.exports;
+assert.equal(mealRules.totalMealCost([{name:'青菜',estimatedCost:0.1},{name:'汤',estimatedCost:0.2}]),0.3);assert.throws(()=>mealRules.totalMealCost([{name:'菜',estimatedCost:NaN}]));assert.throws(()=>mealRules.totalMealCost([{name:'',estimatedCost:1}]));
+assert.equal(mealRules.mealItems({name:'旧日记',estimatedCost:4,recipeId:'old'})[0].name,'旧日记');const dishes=mealRules.summarizeDishes([{items:[{name:'汤',estimatedCost:2},{name:'汤',estimatedCost:3}]},{items:[{name:'汤',estimatedCost:4},{name:'青菜',estimatedCost:1}]}]);assert.equal(dishes[0].count,2);assert.equal(dishes[0].estimatedCost,9);
+const reference=new Date(2026,10,3,12);assert.equal(mealRules.inMealPeriod({date:new Date(2026,10,3,23,59).toISOString()},'天',reference),true);assert.equal(mealRules.inMealPeriod({date:new Date(2026,10,4).toISOString()},'天',reference),false);assert.equal(mealRules.inMealPeriod({date:new Date(2026,11,1).toISOString()},'月',reference),false);
+console.log('PASS multi-dish estimates / invalid costs / legacy diary / dish frequency / exact day-month boundaries');

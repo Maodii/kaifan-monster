@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { drawMenu, DrawOptions, mergeMenuIngredients, purchaseCost, MenuRecipe, DRAW_PRESETS, menuTitle } from '../src/usability-core';
+import { buildCookingGuide, knowledgeFor } from '../src/cooking-guide';
+const r=(id:string,category:string,quantity=100,cost=10,minutes=10):MenuRecipe=>({id,name:id,category,people:2,estimatedCost:cost,minutes,ingredients:[{name:'鸡蛋',quantity,unit:'g'}],steps:['将鸡蛋打散。','中火炒2分钟至凝固。']});
+const catalog=[r('菜A','家常菜'),r('菜B','家常菜'),r('汤A','汤类'),r('汤B','汤类'),r('甜点','甜点')];
+const opt=Object.assign(new DrawOptions(),{people:4,dishes:2,soups:1,minutes:35,budget:65,seed:'2026-11-03'});
+const result=drawMenu(catalog,opt);assert.equal(result.ids.length,3);assert.equal(new Set(result.ids).size,3);assert.equal(result.ids.filter(id=>id.startsWith('汤')).length,1);assert.equal(result.cost,60);assert.equal(result.minutes,30);assert.equal(result.amounts[0].quantity,600);assert.deepEqual(drawMenu(catalog,opt),result);
+assert.equal(drawMenu(catalog,Object.assign(new DrawOptions(),opt,{budget:59})).ids.length,0);
+assert.equal(drawMenu(catalog,Object.assign(new DrawOptions(),opt,{minutes:29})).ids.length,0);
+const excluded=drawMenu(catalog,Object.assign(new DrawOptions(),opt,{disliked:['汤A']}));assert(!excluded.ids.includes('汤A'));assert(excluded.ids.includes('汤B'));
+assert.equal(drawMenu(catalog,Object.assign(new DrawOptions(),opt,{excluded:['鸡蛋']})).ids.length,0);
+const alias=[{...r('番茄','家常菜'),ingredients:[{name:'西红柿',quantity:2,unit:'个'}]}];assert.equal(drawMenu(alias,Object.assign(new DrawOptions(),{dishes:1,soups:0,excluded:['番茄']})).ids.length,0);
+assert.equal(drawMenu(catalog,Object.assign(new DrawOptions(),opt,{mode:'外食',outsideOverhead:60,minutes:45})).ids.length,0);
+assert.equal(drawMenu(catalog,Object.assign(new DrawOptions(),opt,{mode:'外食',outsideOverhead:40,minutes:45,outsidePerPerson:20,budget:79})).ids.length,0);
+const outside=drawMenu(catalog,Object.assign(new DrawOptions(),opt,{mode:'外食',outsideOverhead:40,minutes:45,outsidePerPerson:20,budget:80}));assert.equal(outside.minutes,40);assert.equal(outside.cost,80);const outsideUnknown=drawMenu(catalog.map(r=>({...r,costKnown:false,ingredients:[{name:'未知食材',quantity:1,unit:'份'}]})),Object.assign(new DrawOptions(),opt,{mode:'外食',outsideOverhead:40,minutes:45,outsidePerPerson:20,budget:80}));assert.equal(outsideUnknown.cost,80);assert.equal(outsideUnknown.costComplete,true);
+assert.throws(()=>drawMenu(catalog,Object.assign(new DrawOptions(),opt,{people:0})));
+const merged=mergeMenuIngredients([{...r('A','家常菜'),ingredients:[{name:'西红柿',quantity:1,unit:'kg'}]},{...r('B','汤类'),ingredients:[{name:'番茄',quantity:200,unit:'g'}]}],2,[{name:'番茄',quantity:0.5,unit:'kg',expiryDate:'2099-01-01'}],'2026-11-03');assert.equal(merged.length,1);assert.equal(merged[0].quantity,1.2);assert.equal(merged[0].missing,0.7);
+assert.equal(purchaseCost({name:'鸡蛋',quantity:0,unit:'个',expiryDate:'2099-01-01',estimatedPrice:0,consumedCost:12,wastedCost:3}),15);
+assert.equal(purchaseCost({name:'鸡蛋',quantity:0,unit:'个',expiryDate:'2099-01-01',estimatedPrice:0,consumedCost:99,purchasePrice:15}),15);
+const g=buildCookingGuide({...r('蒸蛋','快手菜'),steps:['**1. 鸡蛋打散。**','盖盖，中小火蒸约10分钟，确认熟透。','盖盖，中小火蒸约10分钟，确认熟透。']});assert.equal(g.steps.length,2);assert.equal(g.steps[0].time,'来源未注明，不均摊总耗时');assert.match(g.steps[1].time,/10分钟/);assert.match(g.steps[1].heat,/中小火/);assert.match(g.steps[1].checkpoint,/熟透/);assert(!g.steps[0].instruction.includes('*'));
+assert(knowledgeFor('嫩豆腐').some(k=>k.selection.includes('老豆腐')));assert(knowledgeFor('生抽').some(k=>k.texture.includes('咸')));
+const recipes=JSON.parse(readFileSync('data/recipes.json','utf8')).recipes;assert(recipes.length>=450);const fullDraw=drawMenu(recipes,Object.assign(new DrawOptions(),{seed:'full-corpus-default'}));assert.equal(fullDraw.ids.length,3);assert(fullDraw.cost>0&&fullDraw.cost<=80);assert(fullDraw.minutes<=60);assert(fullDraw.costComplete);assert(recipes.every((r:MenuRecipe)=>r.costKnown===false));for(const recipe of recipes){const guide=buildCookingGuide(recipe);assert(guide.steps.length>0,recipe.name);assert.deepEqual(JSON.parse(JSON.stringify(guide)),recipe.editorialGuide);assert(guide.steps.every(s=>s.instruction&&s.ingredients&&s.heat&&s.time&&s.checkpoint),recipe.name)}
+console.log('PASS whole-menu constraints, deterministic daily selection, people scaling, soup slots, exclusions/aliases, outside time and cost, stock unit merge, purchase recovery, guide facts and full expanded corpus');
+
+for(const preset of DRAW_PRESETS){const options=Object.assign(new DrawOptions(),{dishes:preset.dishes,soups:preset.soups,budget:0,minutes:0});const picked=drawMenu(recipes,options);assert.equal(picked.ids.length,preset.dishes+preset.soups,preset.label);const selected=recipes.filter((r:MenuRecipe)=>picked.ids.includes(r.id));assert.equal(selected.filter((r:MenuRecipe)=>r.category==='汤类').length,preset.soups,preset.label);assert(!selected.some((r:MenuRecipe)=>['早餐','主食','粥类','饮品','甜点'].includes(r.category)));}assert.equal(menuTitle(0,1),'一份汤');assert.throws(()=>drawMenu(catalog,Object.assign(new DrawOptions(),{dishes:0,soups:0})));console.log('PASS six named presets including soup-only; exact dish/soup slots; staple/breakfast excluded; empty combination rejected');

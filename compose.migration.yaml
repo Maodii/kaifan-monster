@@ -1,0 +1,10 @@
+# Imported exact source images; retain this overlay on the Shanghai deployment.
+services:
+  postgres:
+    image: kaifan-migrated-postgres:20261117
+    pull_policy: never
+  redis:
+    image: kaifan-migrated-redis:20261117
+    pull_policy: never
+  api:
+    pull_policy: never

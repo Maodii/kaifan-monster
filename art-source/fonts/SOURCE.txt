@@ -1,0 +1,3 @@
+LXGW WenKai v1.530 (Regular)
+https://github.com/lxgw/LxgwWenKai/releases/tag/v1.530
+Subset renamed ShikuHand. SIL Open Font License 1.1.

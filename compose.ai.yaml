@@ -1,0 +1,36 @@
+# Standalone optional service: does not alter the business stack or read its .env.
+name: kaifan-ai
+services:
+  ai-gateway:
+    profiles: [ai]
+    build: ./ai-gateway
+    volumes:
+      - ./runtime-config:/app/runtime-config:ro
+    environment:
+      RUNTIME_CONFIG_FILE: /app/runtime-config/config.json
+      AI_ENABLED: ${AI_ENABLED:-false}
+      AI_ALLOW_OUTBOUND: ${AI_ALLOW_OUTBOUND:-false}
+      AI_GATEWAY_TOKEN: ${AI_GATEWAY_TOKEN:-}
+      AI_BASE_URL: ${AI_BASE_URL:-}
+      AI_API_KEY: ${AI_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-}
+      AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-8}
+      AI_REQUESTS_PER_MINUTE: ${AI_REQUESTS_PER_MINUTE:-10}
+      AI_MAX_CONCURRENCY: ${AI_MAX_CONCURRENCY:-2}
+    # No host ports: only containers on the selected Docker network can connect.
+    mem_limit: 192m
+    cpus: 0.35
+    read_only: true
+    tmpfs: ["/tmp:size=8m"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 64
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8100/health',timeout=2)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: {max-size: 5m, max-file: "2"}

@@ -1,0 +1,21 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),ts=require('../backend/node_modules/typescript');
+const values=new Map();const prefs={get:async(k,d)=>values.has(k)?values.get(k):d,put:async(k,v)=>values.set(k,v),flush:async()=>{}};
+const config=JSON.parse(fs.readFileSync('client/entry/src/main/resources/rawfile/release-legal.json','utf8'));
+const context={resourceManager:{getRawFileContent:async()=>Buffer.from(JSON.stringify(config))}};
+const code=ts.transpileModule(fs.readFileSync('client/entry/src/main/ets/model/ReleaseLegal.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+const mod={exports:{}};vm.runInNewContext(code,{exports:mod.exports,require:n=>n==='./ClientTelemetry'?{ClientTelemetry:{clear(){},configure(){}}}:n==='@kit.ArkData'?{preferences:{getPreferences:async()=>prefs}}:{util:{TextDecoder:{create:()=>({decodeToString:bytes=>new TextDecoder().decode(bytes)})}}},Date,Error});
+const {PrivacyAccess,LegalStore,legalParagraphs}=mod.exports;const checks=[];
+(async()=>{
+ assert.throws(()=>PrivacyAccess.require());let s=new LegalStore();assert.equal(await s.load(context),'');assert.throws(()=>PrivacyAccess.require());checks.push('Fresh launch denies cloud requests before a choice');
+ await s.choose(false);assert.throws(()=>PrivacyAccess.require());s=new LegalStore();assert.equal(await s.load(context),'local');assert.throws(()=>PrivacyAccess.require());checks.push('Local choice persists and remains fail-closed after reload');
+ await s.choose(true);assert.doesNotThrow(()=>PrivacyAccess.require());s=new LegalStore();assert.equal(await s.load(context),'cloud');assert.doesNotThrow(()=>PrivacyAccess.require());checks.push('Explicit consent persists for the same policy version');
+ await s.choose(false);assert.throws(()=>PrivacyAccess.require());checks.push('Withdrawal immediately closes the shared network guard');
+ values.set('version','outdated');values.set('choice','cloud');assert.equal(await new LegalStore().load(context),'');assert.throws(()=>PrivacyAccess.require());checks.push('Policy version change requires a fresh choice');
+ const legal=legalParagraphs('privacy',config,'0.9.17 (35)').join('\n');assert(legal.includes('短信认证')&&legal.includes('阿里云')&&legal.includes('7天'));checks.push('Phone processing, provider and challenge retention disclosed in privacy policy');
+ // Exercise the real Cloud.request method with HTTP creation instrumented.
+ let created=0;const cloudmod={exports:{}};const cloudcode=ts.transpileModule(fs.readFileSync('client/entry/src/main/ets/model/Cloud.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+ vm.runInNewContext(cloudcode,{exports:cloudmod.exports,require:n=>n==='./ClientTelemetry'?{ClientTelemetry:{clear(){},configure(){}}}:n==='./ReleaseLegal'?mod.exports:n==='./AssistantCore'?{socialPath:()=>false}:n==='./AuthInputCore'?{normalizeEndpoint:s=>s}:n==='@kit.NetworkKit'?{http:{createHttp:()=>{created++;throw new Error('network should not be reached');}}}:{},Error,JSON,Set,Promise});
+ const cloud=new cloudmod.exports.Cloud();cloud.endpoint='https://legacy.example.invalid';await assert.rejects(cloud.request('/auth/login','POST',{email:'do-not-send',password:'test-only'}),/本机模式/);assert.equal(created,0);checks.push('Real login request is rejected before HTTP creation in local mode');
+ const companion={exports:{}};const companionCode=ts.transpileModule(fs.readFileSync('client/entry/src/main/ets/model/CompanionCore.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;vm.runInNewContext(companionCode,{exports:companion.exports});assert.equal(companion.exports.companionCanShow('about-support',false,false,false),false);assert.equal(companion.exports.companionCanShow('recipes',false,false,false),true);checks.push('About and support hides the floating companion so legal entry arrows remain unobstructed');
+ const report={passed:true,checks,scope:'Actual LegalStore with in-memory platform preferences and real Cloud.request with instrumented HTTP; native UI tested separately'};fs.writeFileSync('work/reports/store-privacy-unit.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));
+})().catch(e=>{console.error(e);process.exit(1)});

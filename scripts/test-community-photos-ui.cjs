@@ -1,0 +1,13 @@
+'use strict';
+const {chromium}=require('/Users/developer/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const fs=require('fs'),path=require('path'),assert=require('assert/strict');const root=path.resolve(__dirname,'..');
+(async()=>{let browser,passed=false;const errors=[],checks=[];try{for(let i=0;i<20;i++){try{if((await fetch('http://127.0.0.1:3001/api/v1/health')).ok)break;}catch(_){}if(i===19)throw Error('API not ready');await new Promise(r=>setTimeout(r,1000));}
+ const credentials=JSON.parse(fs.readFileSync(path.join(root,'work/admin-credentials.json')));browser=await chromium.launch({headless:true,args:['--renderer-process-limit=2']});const page=await browser.newPage({viewport:{width:1440,height:1050},reducedMotion:'reduce'});page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://127.0.0.1:3001/admin/');await page.locator('#email').fill(credentials.email);await page.locator('#password').fill(credentials.password);await page.locator('#login-button').click();await page.locator('.hero-strip').waitFor();
+ await page.locator('[data-view=moderation]').click();await page.locator('#toolbar select').nth(1).waitFor();await Promise.all([page.waitForResponse(r=>r.url().includes('/admin/moderation?')&&r.url().includes('status=approved')),page.locator('#toolbar select').nth(1).selectOption('approved')]);
+ await page.waitForFunction(()=>document.querySelectorAll('.photo-frame').length===8);const photos=page.locator('.post-photo');assert.equal(await photos.count(),8);
+ for(let i=0;i<8;i++){await photos.nth(i).scrollIntoViewIfNeeded();await page.waitForFunction(i=>{const image=document.querySelectorAll('.post-photo')[i];return image.complete&&image.naturalWidth===1440;},i);}
+ checks.push('All 8 actual S3 photographs decoded in approval cards at 1440px; no broken images');await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(root,'work/screenshots/community-photo-admin.png')});checks.push('Real administration screenshot captured, no fabricated UI image');
+ const count=await page.locator('.review-card').count();assert(count>=8);assert((await page.locator('.review-card').first().innerText()).includes('虚构演示'));assert.deepEqual(errors,[]);checks.push('Visible synthetic-post labeling and no JavaScript errors');await page.locator('#logout').click();await page.locator('#login').waitFor();passed=true;
+ }finally{if(browser)await browser.close();fs.writeFileSync(path.join(root,'work/reports/community-photo-ui.json'),JSON.stringify({passed,checks,errors,nativeVerified:false,captureTool:'playwright'},null,2)+'\n');}
+ console.log('PASS community image UI:',checks.length,'groups');})().catch(e=>{console.error(e);process.exitCode=1;});

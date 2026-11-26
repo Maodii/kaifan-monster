@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict'),fs=require('fs'),vm=require('vm'),ts=require('typescript'),path=require('path');
+const file=path.resolve(__dirname,'../../client/entry/src/main/ets/model/SmsAuthCore.ets');const sandbox={exports:{}};vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,sandbox);const m=sandbox.exports;
+assert.equal(m.smsPhone('+86 138-0000-0000'),'13800000000');assert(m.smsPhoneError('123'));assert.equal(m.smsPhoneError('13800000000'),'');
+const d=new m.SmsAuthDraft();d.phone='13800000000';assert(d.proofError(100));d.sent('test','13800000000','login',60,300,100);d.code='123456';assert.equal(d.proofError(101),'');d.phone='13900000000';assert(d.proofError(101));d.phone='13800000000';d.purpose='reset';assert(d.proofError(101));d.purpose='login';assert(d.proofError(300100));assert.equal(m.smsWaitSeconds(60100,101),60);assert.equal(m.smsWaitSeconds(100,101),0);d.clearProof();assert(d.proofError(101));console.log('PASS SMS shared input / phone-purpose binding / expiry / resend / proof clearing');
+assert.equal(m.smsCanSend('1380000000',0,100,true,false),false);
+assert.equal(m.smsCanSend('12800000000',0,100,true,false),false);
+assert.equal(m.smsCanSend('13800000000',0,100,false,false),false);
+assert.equal(m.smsCanSend('13800000000',60100,100,true,false),false);
+assert.equal(m.smsCanSend('13800000000',0,100,true,true),false);
+assert.equal(m.smsCanSend('13800000000',0,100,true,false),true);
+const saved=new m.SmsAuthDraft();saved.phone='13800000000';saved.sent('synthetic','13800000000','reset',60,300,100);saved.code='918273';const metadata=saved.metadata();assert(!metadata.includes('918273'));const restored=new m.SmsAuthDraft();restored.restoreMetadata(metadata,101);assert.equal(restored.purpose,'reset');assert.equal(restored.code,'');assert.equal(m.smsWaitSeconds(restored.retryAt,101),60);assert.equal(m.smsRemainingSeconds(restored.expiresAt,300100),0);restored.code='123456';assert.match(restored.proofError(300100),/过期/);const tampered=new m.SmsAuthDraft();tampered.restoreMetadata(metadata, -100000);assert.equal(tampered.challengeId,'');
+assert(m.passwordLengthOk('abc123'));assert(!m.passwordLengthOk('abc'));assert(m.passwordLetterOk('abc123'));assert(!m.passwordLetterOk('123456'));assert(m.passwordDigitOk('abc123'));assert(!m.passwordDigitOk('abcdef'));
+console.log('PASS send gating / safe metadata restoration / absolute expiry / live password requirements');

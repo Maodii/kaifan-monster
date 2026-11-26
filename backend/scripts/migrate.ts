@@ -1,0 +1,4 @@
+import { readdir, readFile } from 'node:fs/promises';
+import { Database } from '../src/database';
+async function main():Promise<void>{const db=new Database();try{await db.query('CREATE TABLE IF NOT EXISTS schema_migrations(version text PRIMARY KEY,applied_at timestamptz NOT NULL DEFAULT now())');for(const file of (await readdir('migrations')).filter(n=>n.endsWith('.sql')).sort()){await db.transaction(async c=>{await c.query('SELECT pg_advisory_xact_lock(842156)');if((await c.query('SELECT 1 FROM schema_migrations WHERE version=$1',[file])).rowCount)return;await c.query(await readFile(`migrations/${file}`,'utf8'));await c.query('INSERT INTO schema_migrations(version) VALUES($1)',[file]);console.log('Applied',file);});}}finally{await db.onModuleDestroy();}}
+main().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,0 +1,10 @@
+Use case: illustration-story / native app UI icon assets.
+Create exactly SIX separate small premium hand-painted icons on a perfectly plain pure white background, arranged as a precise 3-column by 2-row grid of equal square cells. Each icon is centered in its own cell, surrounded by generous empty white gutters. No captions, text, letters, numbers, borders, tiles, panels or UI screenshot.
+Input image is a style/brand reference only: use its friendly muted lavender and sage palette and soft handmade character, do not duplicate its full composition.
+Top row left: sage green rounded shield with a small lavender padlock and tiny leaf, privacy protection.
+Top row middle: warm cream folded document with a lavender check seal, agreement, NO writing or simulated writing lines.
+Top row right: lavender key with a small sage adjustment knob, permissions.
+Bottom row left: lavender and cream four-point sparkle with small sage speech bubble, AI assistance.
+Bottom row middle: sage and lavender overlapping speech bubbles with tiny warm cream heart, customer support.
+Bottom row right: a friendly little lavender monster head resembling the reference character, two short horns and a warm expression, about the app.
+Style: restrained premium storybook gouache, subtle chalk texture, rounded organic silhouettes, clean medium-weight colored outlines, gentle dimensional shading and minimal soft highlight, legible at 44 pixels. Consistent scale, lighting and line weight. Objects occupy central 65% of each cell. Silhouettes isolated on pure white, no ground shadows, no sparkle decorations outside the objects, no black backgrounds. Avoid photorealism, glossy plastic, generic emoji, text badges, geometric square containers, complex details. Canvas 1536x1024, equal 512x512 grid cells.

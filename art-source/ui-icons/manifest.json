@@ -1,0 +1,791 @@
+{
+  "model": "gpt-image-2.5-flare",
+  "prompt": "art-source/ui-icons/prompt.txt",
+  "style_reference": "art-source/crayon/crayon-pack-source.png",
+  "actual_source_size": [
+    1374,
+    1145
+  ],
+  "files": [
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_today.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：today",
+      "target_path": "client/entry/src/main/resources/base/media/ui_today.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 0,
+      "atlas_bounds": [
+        0,
+        0,
+        240,
+        265
+      ],
+      "sha256": "d6c383b4fe016b30fddb06cb02d42e312fb38279b40c49a301bc99eb2b5715a7",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        52,
+        67,
+        223,
+        228
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_recipes.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：recipes",
+      "target_path": "client/entry/src/main/resources/base/media/ui_recipes.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 1,
+      "atlas_bounds": [
+        240,
+        0,
+        465,
+        265
+      ],
+      "sha256": "9242a6797a3d1b8008d2971675d0bf0167f8896f7197d159004e417c12f25a7e",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        27,
+        78,
+        206,
+        224
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_diary.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：diary",
+      "target_path": "client/entry/src/main/resources/base/media/ui_diary.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 2,
+      "atlas_bounds": [
+        465,
+        0,
+        690,
+        265
+      ],
+      "sha256": "025d935dfb98220db92abafc9644e58a5d7154cd3e61d794610135f688b1046d",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        30,
+        59,
+        198,
+        237
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_pantry.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：pantry",
+      "target_path": "client/entry/src/main/resources/base/media/ui_pantry.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 3,
+      "atlas_bounds": [
+        690,
+        0,
+        915,
+        265
+      ],
+      "sha256": "dd6f35a186dde5356f33ed359d0a28e4ebd0cd65858013acdaf0f2dcb57fdeca",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        26,
+        57,
+        192,
+        236
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_profile.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：profile",
+      "target_path": "client/entry/src/main/resources/base/media/ui_profile.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 4,
+      "atlas_bounds": [
+        915,
+        0,
+        1135,
+        265
+      ],
+      "sha256": "60abe655bf7a3867e9754af0208c193dac87e056d32c8392a588635fad38c399",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        34,
+        53,
+        181,
+        238
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_community.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：community",
+      "target_path": "client/entry/src/main/resources/base/media/ui_community.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 5,
+      "atlas_bounds": [
+        1135,
+        0,
+        1374,
+        265
+      ],
+      "sha256": "c2da4d5b2fcfb8491c464a1f9da69ac077f3144465dbf6c952aedb76b6bd16a2",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        14,
+        53,
+        199,
+        227
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_camera.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：camera",
+      "target_path": "client/entry/src/main/resources/base/media/ui_camera.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 6,
+      "atlas_bounds": [
+        0,
+        265,
+        240,
+        480
+      ],
+      "sha256": "9c72ac3f662ef4bd67b3b44e4bafb40ec031c27f518fe268ead2e79b3e720600",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        49,
+        20,
+        221,
+        185
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_album.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：album",
+      "target_path": "client/entry/src/main/resources/base/media/ui_album.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 7,
+      "atlas_bounds": [
+        240,
+        265,
+        465,
+        480
+      ],
+      "sha256": "fdfac63e52398c21c4fc25fae585f2edc0197e53aa8d9ab871cf2a4d80e5a31c",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        29,
+        29,
+        201,
+        186
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_shuffle.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：shuffle",
+      "target_path": "client/entry/src/main/resources/base/media/ui_shuffle.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 8,
+      "atlas_bounds": [
+        465,
+        265,
+        690,
+        480
+      ],
+      "sha256": "01d143abe9559a88d63e12f524d63264ce8dede54b3da700a6e055dc187bad46",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        23,
+        34,
+        191,
+        181
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_people.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：people",
+      "target_path": "client/entry/src/main/resources/base/media/ui_people.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 9,
+      "atlas_bounds": [
+        690,
+        265,
+        915,
+        480
+      ],
+      "sha256": "83643d7e394ab7a0455ff4995a40498bfb611ee847e137d951fb20eff0b272cd",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        8,
+        28,
+        200,
+        185
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_time.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：time",
+      "target_path": "client/entry/src/main/resources/base/media/ui_time.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 10,
+      "atlas_bounds": [
+        915,
+        265,
+        1135,
+        480
+      ],
+      "sha256": "9ba129610311b017c230573882e2eee453619a49757b2fb4ef98951f0f131112",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        19,
+        26,
+        187,
+        192
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_budget.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：budget",
+      "target_path": "client/entry/src/main/resources/base/media/ui_budget.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 11,
+      "atlas_bounds": [
+        1135,
+        265,
+        1374,
+        480
+      ],
+      "sha256": "57d3eacd8f242663ca91d357d23ef75630acc0351605b994fe175d28e3335376",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        15,
+        27,
+        198,
+        192
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_home.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：home",
+      "target_path": "client/entry/src/main/resources/base/media/ui_home.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 12,
+      "atlas_bounds": [
+        0,
+        480,
+        240,
+        698
+      ],
+      "sha256": "895b93212f1f287286aa85b4078f216693384d8b59853d2a93c5b40a03d395fe",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        39,
+        28,
+        223,
+        194
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_soup.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：soup",
+      "target_path": "client/entry/src/main/resources/base/media/ui_soup.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 13,
+      "atlas_bounds": [
+        240,
+        480,
+        465,
+        698
+      ],
+      "sha256": "3b45a87aeeb21950e2a9424b3c0847090666d9d4a059446d1f6d9ea91d3807cd",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        24,
+        19,
+        199,
+        190
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_light.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：light",
+      "target_path": "client/entry/src/main/resources/base/media/ui_light.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 14,
+      "atlas_bounds": [
+        465,
+        480,
+        690,
+        698
+      ],
+      "sha256": "be0cebc9f0d7b86e8f137569e3b0af98cfa43fe29f5e8edd0d80e901304290a6",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        25,
+        29,
+        198,
+        193
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_quick.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：quick",
+      "target_path": "client/entry/src/main/resources/base/media/ui_quick.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 15,
+      "atlas_bounds": [
+        690,
+        480,
+        915,
+        698
+      ],
+      "sha256": "b372ddfcdcc03fd0e8d3cb277c6e7a207b66d7b067a6645e10fbecda1df8462a",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        15,
+        27,
+        201,
+        193
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_porridge.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：porridge",
+      "target_path": "client/entry/src/main/resources/base/media/ui_porridge.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 16,
+      "atlas_bounds": [
+        915,
+        480,
+        1135,
+        698
+      ],
+      "sha256": "0d09dd96e7419ba44e5f8bcfb6fb7e3eb64ec0b589af2f9825831a0f577d7277",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        14,
+        30,
+        200,
+        192
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_feast.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：feast",
+      "target_path": "client/entry/src/main/resources/base/media/ui_feast.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 17,
+      "atlas_bounds": [
+        1135,
+        480,
+        1374,
+        698
+      ],
+      "sha256": "ec316519eef1cda1352b86a22fdc796dd02287d39279df543f1bdf6a87f76374",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        9,
+        30,
+        199,
+        179
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_staples.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：staples",
+      "target_path": "client/entry/src/main/resources/base/media/ui_staples.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 18,
+      "atlas_bounds": [
+        0,
+        698,
+        240,
+        923
+      ],
+      "sha256": "20177637850d07abf55d3ce829fa9cc28e267015c063667d6771220b155af6d8",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        40,
+        22,
+        233,
+        197
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_breakfast.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：breakfast",
+      "target_path": "client/entry/src/main/resources/base/media/ui_breakfast.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 19,
+      "atlas_bounds": [
+        240,
+        698,
+        465,
+        923
+      ],
+      "sha256": "f82586742d9280f1d2cb1d097177beb3713f517af2cfea8d256c6225bba0cd4b",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        31,
+        17,
+        193,
+        201
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_cold.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：cold",
+      "target_path": "client/entry/src/main/resources/base/media/ui_cold.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 20,
+      "atlas_bounds": [
+        465,
+        698,
+        690,
+        923
+      ],
+      "sha256": "fce5c237fd7af74410b652b3bd2041f6ab5ead0fcd4fcc587e58a7ee5f0e73d2",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        13,
+        30,
+        199,
+        196
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_dessert.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：dessert",
+      "target_path": "client/entry/src/main/resources/base/media/ui_dessert.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 21,
+      "atlas_bounds": [
+        690,
+        698,
+        915,
+        923
+      ],
+      "sha256": "cae9ef6c538e93ef1a82e5678756a376bd2dda9e4a70643b9e9434d10a934c5d",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        23,
+        23,
+        182,
+        200
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_protein.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：protein",
+      "target_path": "client/entry/src/main/resources/base/media/ui_protein.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 22,
+      "atlas_bounds": [
+        915,
+        698,
+        1135,
+        923
+      ],
+      "sha256": "a0d9b6a5cbf46a3339fbf31dad3019eb14bce0b348b8f48785d2be009c232528",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        10,
+        43,
+        181,
+        196
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_taste.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：taste",
+      "target_path": "client/entry/src/main/resources/base/media/ui_taste.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 23,
+      "atlas_bounds": [
+        1135,
+        698,
+        1374,
+        923
+      ],
+      "sha256": "70694f86983103e34f1e6e7aaaa2cfce6aa19170db97605ed464d615c035268e",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        21,
+        27,
+        200,
+        201
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_storage.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：storage",
+      "target_path": "client/entry/src/main/resources/base/media/ui_storage.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 24,
+      "atlas_bounds": [
+        0,
+        923,
+        240,
+        1145
+      ],
+      "sha256": "9c0db5a383b64bcb8173da2f7e181159d71d16112896c892ca1546f97d9b1dcc",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        37,
+        35,
+        220,
+        189
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_appearance.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：appearance",
+      "target_path": "client/entry/src/main/resources/base/media/ui_appearance.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 25,
+      "atlas_bounds": [
+        240,
+        923,
+        465,
+        1145
+      ],
+      "sha256": "78b57baad1fa48a0570a0d73996b609e21f8e7d3163697e69d6ff8b5d1801021",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        34,
+        19,
+        195,
+        200
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_reminder.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：reminder",
+      "target_path": "client/entry/src/main/resources/base/media/ui_reminder.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 26,
+      "atlas_bounds": [
+        465,
+        923,
+        690,
+        1145
+      ],
+      "sha256": "fc25ea2b48dabc2aa1d91ee4a45c04e7e5304ead68f723702406023a052ca07a",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        13,
+        36,
+        191,
+        183
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_cloud.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：cloud",
+      "target_path": "client/entry/src/main/resources/base/media/ui_cloud.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 27,
+      "atlas_bounds": [
+        690,
+        923,
+        915,
+        1145
+      ],
+      "sha256": "2ee8915d553d22806e03ccb9bcdb13d68089314abaa085761ca0d44f390436da",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        1,
+        42,
+        196,
+        184
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_backup.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：backup",
+      "target_path": "client/entry/src/main/resources/base/media/ui_backup.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 28,
+      "atlas_bounds": [
+        915,
+        923,
+        1135,
+        1145
+      ],
+      "sha256": "a3b3e4a78dafb85f9c7817a1e0a627f0553ced9a20fbe00a13f4b716bdcfeb2d",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        4,
+        40,
+        191,
+        196
+      ]
+    },
+    {
+      "path": "client/entry/src/main/resources/base/media/ui_help.png",
+      "kind": "generated_ui",
+      "purpose": "独立蜡笔功能图标：help",
+      "target_path": "client/entry/src/main/resources/base/media/ui_help.png",
+      "source_path": "art-source/ui-icons/atlas.png",
+      "cell": 29,
+      "atlas_bounds": [
+        1135,
+        923,
+        1374,
+        1145
+      ],
+      "sha256": "119d5a3a24a289b3937542cd9e2d5d63a05d8b9f7a2ca1be7c362ddd0f5734fa",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "source_crop": [
+        11,
+        14,
+        198,
+        199
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+name: 申请开发测试服务
+description: 为开饭小怪的开发或联调申请示例主体测试权限。
+title: "[服务申请] "
+body:
+  - type: markdown
+    attributes:
+      value: "申请内容对仓库读者可见。请只填开发用途、所需能力和期限。请勿填写手机号、密码、验证码、API Key、SSH 密钥或实际服务地址。"
+  - type: textarea
+    id: purpose
+    attributes:
+      label: 你准备开发或验证什么？
+      placeholder: 例如，为 Android 的库存同步提交修复，关联 Issue 或 PR……
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 所需测试能力
+      multiple: true
+      options:
+        - 账号与业务 API
+        - AI 测试额度
+        - 短信流程联调（优先模拟服务）
+    validations:
+      required: true
+  - type: input
+    id: duration
+    attributes:
+      label: 预计测试期限
+      placeholder: 例如，7 天
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 测试范围
+      options:
+        - label: 我会使用测试数据，遵守批准的范围与额度，在约定的私密渠道接收示例主体配置。
+          required: true

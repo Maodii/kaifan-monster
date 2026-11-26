@@ -1,0 +1,18 @@
+services:
+  caddy:
+    image: public.ecr.aws/docker/library/caddy:2-alpine
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN}
+      S3_DOMAIN: ${S3_DOMAIN:?Set S3_DOMAIN}
+      TLS_EMAIL: ${TLS_EMAIL:?Set TLS_EMAIL}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      api: { condition: service_healthy }
+    restart: unless-stopped
+volumes:
+  caddy-data:
+  caddy-config:

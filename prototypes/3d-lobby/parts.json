@@ -1,0 +1,342 @@
+{
+  "pantry": [
+    {
+      "id": "part_fridge_base",
+      "name": "建筑地台",
+      "station": "Architecture",
+      "details": "边框榫接、铺装缝、包边、独立踢脚线"
+    },
+    {
+      "id": "part_fridge_shell",
+      "name": "冰箱壳体与密封结构",
+      "station": "pantry",
+      "details": "双层钣金壳体、内胆圆角、橡胶密封圈、检修缝、底脚与散热栅"
+    },
+    {
+      "id": "part_fridge_thermostat",
+      "name": "冷藏背板与温控",
+      "station": "pantry",
+      "details": "分层风道、金属出风片、旋钮刻线、温度面板与顶灯"
+    },
+    {
+      "id": "part_fridge_shelves",
+      "name": "冷藏层板与导轨",
+      "station": "pantry",
+      "details": "带真实厚度的透光层板、包边、挂轨及高度调节卡槽"
+    },
+    {
+      "id": "part_fridge_dairy",
+      "name": "奶瓶、果酱与酸奶",
+      "station": "pantry",
+      "details": "瓶肩收口、旋纹瓶盖、纸质标签、果酱罐和封口酸奶杯"
+    },
+    {
+      "id": "part_fridge_eggs",
+      "name": "模压纸浆蛋托",
+      "station": "pantry",
+      "details": "六个凹槽、隔柱、折边和不对称蛋壳轮廓"
+    },
+    {
+      "id": "part_fridge_produce",
+      "name": "蔬果、叶脉与切面",
+      "station": "pantry",
+      "details": "番茄萼片、胡萝卜根纹、菜叶卷边与分叉叶脉"
+    },
+    {
+      "id": "part_fridge_crisper",
+      "name": "保鲜抽屉",
+      "station": "pantry",
+      "details": "透明前挡、内凹拉手、滑轨、沥水沟槽与分隔"
+    },
+    {
+      "id": "part_fridge_door",
+      "name": "可开合冰箱门与门铰",
+      "station": "pantry",
+      "details": "有厚度的门板、独立铰链轴、螺丝、门封与弯曲金属把手"
+    },
+    {
+      "id": "part_fridge_market",
+      "name": "采购袋与补货清单",
+      "station": "shopping",
+      "details": "纸袋折边、扁平提手、收据锯齿与购物篮编织纹"
+    }
+  ],
+  "meals": [
+    {
+      "id": "part_diary_base",
+      "name": "建筑地台",
+      "station": "Architecture",
+      "details": "边框榫接、铺装缝、包边、独立踢脚线"
+    },
+    {
+      "id": "part_diary_backdrop",
+      "name": "记餐角的建筑与置物格",
+      "station": "Architecture",
+      "details": "木格窗、凹槽边框、软木公告面与独立小抽屉"
+    },
+    {
+      "id": "part_diary_desktop",
+      "name": "记餐书桌与黄铜角码",
+      "station": "meals",
+      "details": "厚实桌板、橡木纹路、倒角桌沿、锥形腿及可见角码"
+    },
+    {
+      "id": "part_diary_calendar",
+      "name": "翻页日历与日期卡",
+      "station": "meals",
+      "details": "双层月历纸页、七列日期格、双环装订、当前日期框"
+    },
+    {
+      "id": "part_diary_journal",
+      "name": "三餐手账与纸页结构",
+      "station": "meals",
+      "details": "书芯分层、中央凹折、手写三餐条目、独立标签和骑马订线"
+    },
+    {
+      "id": "part_diary_meal",
+      "name": "一餐的食物与真实餐具",
+      "station": "meals",
+      "details": "空心碗盘、食物横截面、米粒、蔬菜叶脉与筷子尖"
+    },
+    {
+      "id": "part_diary_receipts",
+      "name": "花费小票与热量卡",
+      "station": "meals",
+      "details": "带齿纸边、消费条目、合计与独立营养标签"
+    },
+    {
+      "id": "part_diary_pen",
+      "name": "钢笔、笔帽与纸夹",
+      "station": "meals",
+      "details": "笔尖开缝、夹片、笔帽台阶及金属纸夹双弯"
+    },
+    {
+      "id": "part_diary_memories",
+      "name": "餐食照片与便签",
+      "station": "meals",
+      "details": "独立照片白边、木夹、黄铜钉与当天标语"
+    },
+    {
+      "id": "part_diary_chair",
+      "name": "弯木椅与织物",
+      "station": "Architecture",
+      "details": "连续弯木靠背、截面厚度、斜腿和座面固定件"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "part_kitchen_base",
+      "name": "建筑地台",
+      "station": "Architecture",
+      "details": "边框榫接、铺装缝、包边、独立踢脚线"
+    },
+    {
+      "id": "part_kitchen_architecture",
+      "name": "厨房墙面与窗框",
+      "station": "Architecture",
+      "details": "砌缝釉面砖、带深度的窗框、窗台木纹与标识"
+    },
+    {
+      "id": "part_kitchen_cabinet",
+      "name": "榫接柜体与抽屉",
+      "station": "recipes",
+      "details": "门板框芯、台面倒角、抽屉缝、黄铜把手与铆钉"
+    },
+    {
+      "id": "part_kitchen_range",
+      "name": "燃气灶与铸铁锅架",
+      "station": "recipes",
+      "details": "分体炉芯、点火孔、十字锅架、旋钮指示线及拉丝面板"
+    },
+    {
+      "id": "part_kitchen_pot",
+      "name": "搪瓷炖锅与锅盖",
+      "station": "recipes",
+      "details": "旋压锅身、真实内壁、卷口、盖沿、铆接耳柄及蒸汽孔"
+    },
+    {
+      "id": "part_kitchen_sink",
+      "name": "水槽与弯管龙头",
+      "station": "recipes",
+      "details": "内凹盆体、排水滤网、弯曲水嘴与双阀旋钮"
+    },
+    {
+      "id": "part_kitchen_chopping",
+      "name": "案板、厨刀与蔬菜切片",
+      "station": "recipes",
+      "details": "端面拼接案板、楔形刀刃、刀柄铆钉、番茄籽与切面"
+    },
+    {
+      "id": "part_kitchen_recipebook",
+      "name": "翻开的教程与书架",
+      "station": "draw",
+      "details": "纸页弯曲、分层书芯、装订线、步骤字样与书签"
+    },
+    {
+      "id": "part_kitchen_spices",
+      "name": "香料架与标签",
+      "station": "recipes",
+      "details": "阶梯置物架、瓶肩、螺纹瓶盖、不同调料标识"
+    },
+    {
+      "id": "part_kitchen_meal",
+      "name": "摆盘与成品展示",
+      "station": "meals",
+      "details": "空心器皿、炙烤切面、手工釉线、茶杯内壁及餐巾褶皱"
+    },
+    {
+      "id": "part_kitchen_herbs",
+      "name": "香草叶与陶土花盆",
+      "station": "Architecture",
+      "details": "叶片厚度、边缘卷曲、主叶脉和釉面盆口"
+    }
+  ],
+  "community": [
+    {
+      "id": "part_square_paving",
+      "name": "广场铺装与边缘排水",
+      "station": "Architecture",
+      "details": "六边形石砖、铜质边线、路缘石与排水孔"
+    },
+    {
+      "id": "part_square_kiosk",
+      "name": "交流亭与木作立面",
+      "station": "community",
+      "details": "带深度的交流窗口、拼板柜体、金属踢脚、柜门缝和拱形装饰"
+    },
+    {
+      "id": "part_square_awnings",
+      "name": "条纹布篷与缝线",
+      "station": "community",
+      "details": "连续曲面篷布、弧形支架、分色布条、波浪裙边和独立缝线"
+    },
+    {
+      "id": "part_square_posts",
+      "name": "社区照片墙与留言",
+      "station": "community",
+      "details": "拍立得纸边、餐食配图、夹子、话题标签、点赞和评论入口"
+    },
+    {
+      "id": "part_square_table",
+      "name": "同桌长桌与弯木椅",
+      "station": "meals",
+      "details": "共享长桌、端面木纹、桌下横撑、弯木座椅和金属固定件"
+    },
+    {
+      "id": "part_square_tableware",
+      "name": "共享餐桌上的成品",
+      "station": "meals",
+      "details": "手作釉线餐盘、叉勺、内凹茶杯、织物餐垫和不同菜品"
+    },
+    {
+      "id": "part_square_menu",
+      "name": "话题招牌与黑板",
+      "station": "community",
+      "details": "立体招牌边框、字样、木架铰链和今日话题"
+    },
+    {
+      "id": "part_square_lights",
+      "name": "广场灯串与灯座",
+      "station": "community",
+      "details": "悬垂电缆、灯泡玻璃轮廓、螺口灯座与护罩"
+    },
+    {
+      "id": "part_square_planters",
+      "name": "广场绿植与陶土台阶",
+      "station": "Architecture",
+      "details": "叶片卷曲、分叉叶脉、花盆内壁及独立路沿"
+    },
+    {
+      "id": "part_square_market",
+      "name": "分享餐篮与餐巾",
+      "station": "community",
+      "details": "逐根编织篮体、提手弯折、叠放餐巾和分享卡"
+    }
+  ],
+  "profile": [
+    {
+      "id": "part_monster_base",
+      "name": "建筑地台",
+      "station": "Architecture",
+      "details": "边框榫接、铺装缝、包边、独立踢脚线"
+    },
+    {
+      "id": "part_monster_backdrop",
+      "name": "角色房间与拱窗",
+      "station": "Architecture",
+      "details": "圆拱壁龛、厚窗框、木质踢脚和示例主体空间标识"
+    },
+    {
+      "id": "part_monster_character",
+      "name": "Q萌抱饭小怪",
+      "station": "mascot",
+      "details": "Q萌连续雕塑、错落绒毛、嵌入小眼睛、柔和腮红、短手短脚及抱碗姿势"
+    },
+    {
+      "id": "part_monster_skin",
+      "name": "身体轮廓与蓬松毛束",
+      "station": "mascot",
+      "details": "连续圆润网格、非对称软毛束、三层毛流、头顶翘毛与细密绒面"
+    },
+    {
+      "id": "part_monster_face",
+      "name": "小椭圆眼与微笑",
+      "station": "mascot",
+      "details": "嵌入眼缘、树脂眼睛、同向眼神、柔和高光、W形笑嘴和米粒小乳牙"
+    },
+    {
+      "id": "part_monster_paws",
+      "name": "短手短脚与掌纹",
+      "station": "mascot",
+      "details": "贴身短臂、圆润掌面、轻微指缝、柔软脚掌与内八字姿态"
+    },
+    {
+      "id": "part_monster_bowl",
+      "name": "手釉陶瓷饭碗",
+      "station": "mascot",
+      "details": "完整内外壁、厚圆口、收口圈足、手绘奶油圈及三瓣芽纹"
+    },
+    {
+      "id": "part_monster_rice",
+      "name": "细米粒与薄荷汤匙",
+      "station": "mascot",
+      "details": "逐粒细米、自然堆叠、微润高光、凹面汤匙和弯曲勺柄"
+    },
+    {
+      "id": "part_monster_plinth",
+      "name": "角色展示台与刻度",
+      "station": "profile",
+      "details": "旋压台阶、凹槽、金属嵌条与旋转展示刻度"
+    },
+    {
+      "id": "part_monster_wardrobe",
+      "name": "围裙与角色衣架",
+      "station": "profile",
+      "details": "悬挂布料曲面、褶皱、口袋、围裙系带、衣架接头"
+    },
+    {
+      "id": "part_monster_badges",
+      "name": "示例主体成就徽章",
+      "station": "profile",
+      "details": "切角星章、压边、双层缎带和独立铭牌"
+    },
+    {
+      "id": "part_monster_favorites",
+      "name": "喜欢的食谱与收藏柜",
+      "station": "recipes",
+      "details": "相册层板、书脊、书签、金属挡书与红心收藏标识"
+    },
+    {
+      "id": "part_monster_nameplate",
+      "name": "昵称牌与偏好卡",
+      "station": "profile",
+      "details": "镶边昵称牌、示例主体档案卡、翻页铰链和独立字样"
+    },
+    {
+      "id": "part_monster_mirror",
+      "name": "全身镜与边框接缝",
+      "station": "profile",
+      "details": "镜面反射材质、连续拱形外框、支脚和压条"
+    }
+  ]
+}

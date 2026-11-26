@@ -1,0 +1,9 @@
+[Unit]
+Description=Check Kaifan health without inference every ten minutes
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=10min
+RandomizedDelaySec=30s
+Persistent=true
+[Install]
+WantedBy=timers.target

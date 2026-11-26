@@ -1,0 +1,32 @@
+[
+  {
+    "name": "西红柿炒鸡蛋",
+    "minutes": 20,
+    "image": "assets/dish-0.webp"
+  },
+  {
+    "name": "上汤娃娃菜",
+    "minutes": 15,
+    "image": "assets/dish-1.webp"
+  },
+  {
+    "name": "可乐鸡翅",
+    "minutes": 22,
+    "image": "assets/dish-2.webp"
+  },
+  {
+    "name": "玉米排骨汤",
+    "minutes": 60,
+    "image": "assets/dish-3.webp"
+  },
+  {
+    "name": "排骨山药玉米汤",
+    "minutes": 56,
+    "image": "assets/dish-4.webp"
+  },
+  {
+    "name": "昂刺鱼豆腐汤",
+    "minutes": 48,
+    "image": "assets/dish-5.webp"
+  }
+]

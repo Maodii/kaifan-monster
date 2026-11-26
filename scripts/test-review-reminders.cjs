@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),ts=require('../backend/node_modules/typescript');
+let calls=0,cancels=0,fail=false,allowed=true;
+const reminderAgentManager={ReminderType:{REMINDER_TYPE_ALARM:0,REMINDER_TYPE_CALENDAR:1,REMINDER_TYPE_TIMER:2},publishReminder:async()=>{calls++;await new Promise(r=>setTimeout(r,1));if(fail)throw Error('quota');return calls},cancelReminder:async()=>{cancels++}};
+const notificationManager={requestEnableNotification:async()=>{},isNotificationEnabled:async()=>allowed};
+const mod={exports:{}};const code=ts.transpileModule(fs.readFileSync('client/entry/src/main/ets/model/Reminders.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+vm.runInNewContext(code,{exports:mod.exports,require:n=>n==='@kit.BackgroundTasksKit'?{reminderAgentManager}:n==='@kit.NotificationKit'?{notificationManager}:{daysLeft:()=>5,CATEGORIES:['蔬菜','肉禽水产','蛋奶','干货','水果','调味品','其他']},setTimeout,Promise,Date,Math,JSON});
+const R=mod.exports.Reminders,settings=new Map([['notifications','true']]);const store={state:{foods:[]},getSetting:async(k,d)=>settings.get(k)??d,setting:async(k,v)=>{settings.set(k,v)}};
+(async()=>{await Promise.all([R.schedule(store),R.schedule(store),R.schedule(store)]);assert.equal(calls,1);assert.equal(cancels,0);
+settings.set('theme','莓果花园');await R.schedule(store);assert.equal(calls,1);settings.set('threshold:肉禽水产','4');await R.schedule(store);assert.equal(calls,2);await R.cancel(store);settings.set('notifications','false');await R.schedule(store);settings.set('notifications','true');calls=0;cancels=0;await R.schedule(store);assert.equal(calls,1);
+settings.set('reminderHour','18');await R.schedule(store);assert.equal(calls,2);assert.equal(cancels,1);
+fail=true;settings.set('reminderHour','19');await assert.rejects(R.schedule(store),/未完整登记/);fail=false;await R.schedule(store);assert.equal(calls,4);
+allowed=false;await assert.rejects(R.permission({}),/通知尚未开启/);allowed=true;await R.permission({});
+settings.set('notifications','false');await R.schedule(store);assert.equal(calls,4);assert.equal(settings.get('reminderIds'),'[]');
+console.log(JSON.stringify({passed:true,checks:['Concurrent scheduling coalesced','Theme changes do not rebuild reminder registrations','Hour change replaces registered reminders','Failed registration retries without false success','Denied notification permission surfaced','Disable cancels pending registrations'],scope:'Transpiled actual ArkTS reminder module with mocked OS APIs; physical device delivery not tested'}));})().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,0 +1,7 @@
+{
+  "host": "api.example.invalid",
+  "region": "cn-shanghai",
+  "domain": "site.example.invalid",
+  "sshKnownHosts": "known_hosts_service",
+  "sshKey": "service-deploy-key"
+}

@@ -1,0 +1,33 @@
+export function uiIcon(key:string):Resource {
+ if(key==='today'){return $r('app.media.ui_today');}
+ if(key==='recipes'){return $r('app.media.ui_recipes');}
+ if(key==='diary'){return $r('app.media.ui_diary');}
+ if(key==='pantry'){return $r('app.media.ui_pantry');}
+ if(key==='profile'){return $r('app.media.ui_profile');}
+ if(key==='community'){return $r('app.media.ui_community');}
+ if(key==='camera'){return $r('app.media.ui_camera');}
+ if(key==='album'){return $r('app.media.ui_album');}
+ if(key==='shuffle'){return $r('app.media.ui_shuffle');}
+ if(key==='people'){return $r('app.media.ui_people');}
+ if(key==='time'){return $r('app.media.ui_time');}
+ if(key==='budget'){return $r('app.media.ui_budget');}
+ if(key==='home'){return $r('app.media.ui_home');}
+ if(key==='soup'){return $r('app.media.ui_soup');}
+ if(key==='light'){return $r('app.media.ui_light');}
+ if(key==='quick'){return $r('app.media.ui_quick');}
+ if(key==='porridge'){return $r('app.media.ui_porridge');}
+ if(key==='feast'){return $r('app.media.ui_feast');}
+ if(key==='staples'){return $r('app.media.ui_staples');}
+ if(key==='breakfast'){return $r('app.media.ui_breakfast');}
+ if(key==='cold'){return $r('app.media.ui_cold');}
+ if(key==='dessert'){return $r('app.media.ui_dessert');}
+ if(key==='protein'){return $r('app.media.ui_protein');}
+ if(key==='taste'){return $r('app.media.ui_taste');}
+ if(key==='storage'){return $r('app.media.ui_storage');}
+ if(key==='appearance'){return $r('app.media.ui_appearance');}
+ if(key==='reminder'){return $r('app.media.ui_reminder');}
+ if(key==='cloud'){return $r('app.media.ui_cloud');}
+ if(key==='backup'){return $r('app.media.ui_backup');}
+ if(key==='help'){return $r('app.media.ui_help');}
+ return $r('app.media.ui_help');
+}

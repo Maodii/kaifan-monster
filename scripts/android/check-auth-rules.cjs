@@ -1,0 +1,15 @@
+const assert=require('assert/strict');
+module.exports=async function(page,shot){
+ const checks=[];
+ await page.evaluate(()=>{cloud.session=new C.Session();parity.authRegister=true;parity.authDraft=null;store.state.changes=[];go('account');window.authCalls=[];cloud.login=async(...args)=>{authCalls.push(args);throw Error('测试已捕获，无网络');};});
+ const account=page.locator('form[data-submit="login"] [name="email"]'),password=page.locator('form[data-submit="login"] [name="password"]');
+ assert.equal(await account.getAttribute('type'),'text');assert.equal(await password.getAttribute('minlength'),'6');assert.equal(await password.getAttribute('autocomplete'),'new-password');
+ assert.equal(await page.locator('[data-submit="endpoint"]').count(),0);assert.equal(await page.locator('[data-action="localEndpoint"]').count(),0);assert.ok(!(await page.locator('main').innerText()).includes('高级连接'));assert.equal(await page.locator('[data-action="go"][data-value="recovery"]').count(),0);
+ await account.fill('饭搭子_01');await password.fill('abc123');await page.locator('[name="confirmation"]').fill('abc123');await page.locator('[name="displayName"]').fill('饭搭子');await page.locator('form[data-submit="login"] button[type="submit"]').click();await page.waitForFunction(()=>authCalls.length===1);assert.equal(await page.evaluate(()=>authCalls[0][0]),'饭搭子_01');assert.equal(await page.evaluate(()=>authCalls[0][1]),'abc123');checks.push('Custom account + six-character mixed password reaches registration contract, no email or advanced-connection controls');
+ await password.fill('abcdef');await page.locator('[name="confirmation"]').fill('abcdef');await page.locator('form[data-submit="login"] button[type="submit"]').click();assert.equal(await page.evaluate(()=>authCalls.length),1);assert.ok((await page.locator('main').innerText()).includes('字母和数字'));checks.push('Single-class new password fails locally before any network call');
+ await page.locator('[data-action="authMode"][data-value="false"]').click();assert.equal(await password.getAttribute('minlength'),'1');await account.fill('legacy@example.test');await password.fill('old');await page.locator('form[data-submit="login"] button[type="submit"]').click();await page.waitForFunction(()=>authCalls.length===2);checks.push('Existing email account and legacy password remain accepted by login form');
+ await page.evaluate(()=>go('security'));assert.equal(await page.locator('[data-submit="requestEmail"],[data-submit="confirmEmail"]').count(),0);assert.ok(!(await page.locator('main').innerText()).includes('邮箱验证'));checks.push('Account security contains no email-verification workflow');
+ await page.evaluate(()=>{parity.authRegister=true;parity.authDraft={email:'饭搭子_01',password:'',confirmation:'',displayName:'饭搭子'};go('account');});
+ for(const width of [320,390,768]){await page.setViewportSize({width,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));}
+ await page.setViewportSize({width:390,height:844});await shot('account-v0914-android.png','自定义账号注册、六位字母数字密码与精简连接界面',false);checks.push('Account form fits narrow phone and tablet widths');return {checks};
+};

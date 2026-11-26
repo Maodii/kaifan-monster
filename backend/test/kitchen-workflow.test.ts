@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import { writeFileSync,readFileSync } from 'node:fs';
+import { cookTimeline } from '../src/kitchen-workflow-core';
+import { CoreRecipe,RankingOptions,rankPersonalized,seasonalIngredientNames,feedbackAction,trainTasteModel } from '../src/recommend-core';
+import { buildCookingChecklist,knowledgeFor } from '../src/cooking-guide';
+const soup:CoreRecipe={id:'soup',name:'萝卜汤',minutes:45,prepMinutes:5,cookMinutes:40,category:'汤类',ingredients:[{name:'萝卜',quantity:200,unit:'g'}],steps:['萝卜洗净切块。','小火煲35分钟至软烂。']};
+const fry:CoreRecipe={id:'fry',name:'鸡蛋炒菜',minutes:12,prepMinutes:5,cookMinutes:7,category:'家常菜',ingredients:[{name:'鸡蛋',quantity:2,unit:'个'}],steps:['打散鸡蛋。','中火不断翻炒5分钟至凝固。']};
+const timeline=cookTimeline([fry,soup,soup]);assert.equal(timeline.tasks.length,2);assert.equal(timeline.tasks[0].recipeId,'soup');assert.equal(timeline.prepMinutes,10);assert.equal(timeline.conservativeMinutes,57);assert.equal(timeline.elapsedMinutes,57);assert.equal(timeline.parallelMinutes,45);assert(timeline.parallelMinutes>=timeline.activeMinutes);assert(timeline.estimated);assert(timeline.complete);assert.equal(timeline.tasks[1].waitMinutes,0);
+const unknown=cookTimeline([{...soup,id:'u',minutes:undefined,prepMinutes:undefined,cookMinutes:undefined}]);assert(!unknown.complete);assert.equal(unknown.elapsedMinutes,0);assert.equal(unknown.parallelMinutes,0);assert(unknown.warnings.some(w=>w.includes('不能视为完整')));
+const inconsistent=cookTimeline([{...soup,minutes:90}]);assert.equal(inconsistent.tasks[0].splitKnown,false);assert.equal(inconsistent.parallelMinutes,90);assert.equal(inconsistent.tasks[0].waitMinutes,0);
+assert.equal(cookTimeline([{...soup,steps:['大火不断翻动，煮35分钟。']}]).tasks[0].waitMinutes,0);assert.equal(cookTimeline([]).elapsedMinutes,0);assert.equal(cookTimeline([]).parallelMinutes,0);
+const now=Date.parse('2026-12-05T12:00:00+08:00');const options=new RankingOptions();assert.deepEqual(seasonalIngredientNames(soup,12),['萝卜']);assert.deepEqual(seasonalIngredientNames(soup,7),[]);assert.deepEqual(seasonalIngredientNames(soup,0),[]);
+const neutral=rankPersonalized([soup,fry],[],[],[],options,now).find(r=>r.recipeId==='soup')!;assert(neutral.reasons.some(r=>r.includes('时令灵感')));
+const off=Object.assign(new RankingOptions(),{seasonal:false});assert.equal(neutral.score-rankPersonalized([soup,fry],[],[],[],off,now).find(r=>r.recipeId==='soup')!.score,2);
+const feedback=(action:string,intent='cook')=>[{recipeId:'soup',action,date:'2026-12-05T00:00:00Z',intent}];
+for(const action of ['recently_eaten','too_complex']){const result=rankPersonalized([soup,fry],[],[],feedback(action),options,now).find(r=>r.recipeId==='soup')!;assert(result.score<neutral.score-10);assert.equal(result.learned,neutral.learned);assert.equal(trainTasteModel([soup,fry],[],feedback(action),now,'cook').features.length,0);}
+const taste=rankPersonalized([soup,fry],[],[],feedback('not_my_taste'),options,now).find(r=>r.recipeId==='soup')!;assert(taste.learned<0);assert(taste.score<neutral.score-19);
+assert.equal(feedbackAction('最近吃过'),'recently_eaten');assert.equal(feedbackAction('太麻烦'),'too_complex');assert.equal(feedbackAction('不合口味'),'not_my_taste');
+const record=Object.assign(new RankingOptions(),{intent:'record'});assert.deepEqual(rankPersonalized([soup,fry],[],[],feedback('too_complex','record'),record,now).map(r=>[r.recipeId,r.score]),rankPersonalized([soup,fry],[],[],[],record,now).map(r=>[r.recipeId,r.score]));
+const disabled=Object.assign(new RankingOptions(),{learning:false});assert.deepEqual(rankPersonalized([soup,fry],[],[],feedback('not_my_taste'),disabled,now),rankPersonalized([soup,fry],[],[],[],disabled,now));
+const hard=Object.assign(new RankingOptions(),{excluded:['萝卜'],homeRegion:'广东'});assert(!rankPersonalized([soup,fry],[],[],[],hard,now).some(r=>r.recipeId==='soup'));
+const varieties=Array.from({length:8},(_,index)=>({...fry,id:'v'+index,dishGroupId:index<5?'same':'other-'+index}));assert.equal(new Set(rankPersonalized(varieties,[],[],[],options,now).slice(0,3).map(r=>varieties.find(v=>v.id===r.recipeId)!.dishGroupId)).size,3);
+assert(knowledgeFor('无盐黄油').some(k=>k.key==='butter'));assert(knowledgeFor('冷冻虾仁').some(k=>k.key==='frozen'));assert(knowledgeFor('泡打粉').some(k=>k.key==='leaven'));
+const checklist=buildCookingChecklist({...soup,ingredients:[...soup.ingredients,{name:'生抽',quantity:4,unit:'mL',optional:true},{name:'肉',quantity:0,unit:'g'}]});assert.deepEqual(checklist.unknownIngredients,['肉']);assert(checklist.preparation.length);assert(checklist.checkpoints.length);assert(checklist.pitfalls.some(p=>p.includes('含盐')));
+assert.equal(readFileSync('src/kitchen-workflow-core.ts','utf8').replace("'./recommend-core'","'./RecommendationCore'"),readFileSync('../client/entry/src/main/ets/model/KitchenWorkflowCore.ets','utf8'));
+const checks=['Conservative total, explicit waiting overlap, duplicate IDs, unknown/inconsistent time handling','Seasonality soft boost and hard exclusions','Context feedback separate from taste learning and dining intent','Dish-group diversity without pruning eligible results','Six ingredient distinction cards and source-preserving cooking checklist','Portable ArkTS/backend core parity'];
+writeFileSync('../work/reports/kitchen-workflow-core.json',JSON.stringify({passed:true,checks,nativeVerified:false},null,2)+'\n');console.log('PASS '+checks.join(' / '));

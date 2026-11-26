@@ -1,0 +1,97 @@
+[
+  {
+    "path": "assets/monster.webp",
+    "source": "client/entry/src/main/resources/base/media/brand_monster.png",
+    "purpose": "正式品牌素材优化复用"
+  },
+  {
+    "path": "assets/monster-joy.webp",
+    "source": "client/entry/src/main/resources/base/media/ai_mascot_joy.png",
+    "purpose": "正式品牌素材优化复用"
+  },
+  {
+    "path": "assets/tomato.webp",
+    "source": "client/entry/src/main/resources/base/media/food_tomato.webp",
+    "purpose": "正式品牌素材优化复用"
+  },
+  {
+    "path": "assets/greens.webp",
+    "source": "client/entry/src/main/resources/base/media/food_greens.webp",
+    "purpose": "正式品牌素材优化复用"
+  },
+  {
+    "path": "assets/eggs.webp",
+    "source": "client/entry/src/main/resources/base/media/food_eggs.webp",
+    "purpose": "正式品牌素材优化复用"
+  },
+  {
+    "path": "assets/rice.webp",
+    "source": "client/entry/src/main/resources/base/media/food_rice.webp",
+    "purpose": "正式品牌素材优化复用"
+  },
+  {
+    "path": "assets/quick.webp",
+    "source": "client/entry/src/main/resources/base/media/category_quick.webp",
+    "purpose": "正式品牌素材优化复用"
+  },
+  {
+    "path": "assets/paper.webp",
+    "source": "client/entry/src/main/resources/base/media/crayon_paper_tile.png",
+    "purpose": "正式品牌素材优化复用"
+  },
+  {
+    "path": "assets/screen-home.webp",
+    "source": "work/screenshots/store-current-home.jpeg",
+    "purpose": "真实鸿蒙界面预览，非网站模拟界面"
+  },
+  {
+    "path": "assets/screen-recipes.webp",
+    "source": "work/screenshots/store-current-recipes.jpeg",
+    "purpose": "真实鸿蒙界面预览，非网站模拟界面"
+  },
+  {
+    "path": "assets/screen-pantry.webp",
+    "source": "work/screenshots/store-current-pantry.jpeg",
+    "purpose": "真实鸿蒙界面预览，非网站模拟界面"
+  },
+  {
+    "path": "assets/screen-meals.webp",
+    "source": "work/screenshots/store-current-meals.jpeg",
+    "purpose": "真实鸿蒙界面预览，非网站模拟界面"
+  },
+  {
+    "path": "assets/screen-ai.webp",
+    "source": "work/screenshots/store-current-ai.jpeg",
+    "purpose": "真实鸿蒙界面预览，非网站模拟界面"
+  },
+  {
+    "path": "assets/dish-0.webp",
+    "source": "client/entry/src/main/resources/base/media/dish_0ee385cc_541c_5484_aaef_acaae8ddc2a7.webp",
+    "purpose": "官网抽餐演示，沿用客户端菜谱"
+  },
+  {
+    "path": "assets/dish-1.webp",
+    "source": "client/entry/src/main/resources/base/media/dish_01b74efd_d529_5330_a6bd_30911ccb8abe.webp",
+    "purpose": "官网抽餐演示，沿用客户端菜谱"
+  },
+  {
+    "path": "assets/dish-2.webp",
+    "source": "client/entry/src/main/resources/base/media/dish_722ba80b_20f4_534e_85ea_e0e10ed885cd.webp",
+    "purpose": "官网抽餐演示，沿用客户端菜谱"
+  },
+  {
+    "path": "assets/dish-3.webp",
+    "source": "client/entry/src/main/resources/base/media/dish_4b4414b9_c362_5ac2_86f4_2e236440449d.webp",
+    "purpose": "官网抽餐演示，沿用客户端菜谱"
+  },
+  {
+    "path": "assets/dish-4.webp",
+    "source": "client/entry/src/main/resources/base/media/dish_540748ae_3de4_5e98_b70b_4c9885760831.webp",
+    "purpose": "官网抽菜灵感，复用正式客户端手绘菜图"
+  },
+  {
+    "path": "assets/dish-5.webp",
+    "source": "client/entry/src/main/resources/base/media/dish_9cfddb9a_84af_567c_b444_2f3b142ee4b8.webp",
+    "purpose": "官网抽菜灵感，复用正式客户端手绘菜图"
+  }
+]

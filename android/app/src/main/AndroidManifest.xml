@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.kaifan.monster" android:versionCode="54" android:versionName="0.9.36">
+<uses-sdk android:minSdkVersion="26" android:targetSdkVersion="36"/>
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+<uses-feature android:name="android.hardware.camera" android:required="false"/>
+<application android:debuggable="true" android:label="开饭小怪" android:theme="@style/AppTheme" android:icon="@drawable/app_icon" android:allowBackup="false" android:usesCleartextTraffic="false" android:networkSecurityConfig="@xml/network_security" android:enableOnBackInvokedCallback="true" android:supportsRtl="true">
+<activity android:name=".MainActivity" android:exported="true" android:configChanges="keyboardHidden|orientation|screenSize" android:windowSoftInputMode="adjustResize"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
+<provider android:name=".PhotoProvider" android:authorities="com.kaifan.monster.photos" android:exported="false" android:grantUriPermissions="true"/>
+<receiver android:name=".TimerReceiver" android:exported="false"><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/></intent-filter></receiver>
+<receiver android:name=".PantryWidget" android:exported="true"><intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE"/></intent-filter><meta-data android:name="android.appwidget.provider" android:resource="@xml/pantry_widget"/></receiver>
+</application></manifest>

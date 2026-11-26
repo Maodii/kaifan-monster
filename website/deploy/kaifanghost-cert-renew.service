@@ -1,0 +1,9 @@
+[Unit]
+Description=Renew site.example.invalid website TLS certificate
+Wants=network-online.target
+After=network-online.target nginx.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/kaifan/certbot-venv/bin/certbot renew --quiet --cert-name site.example.invalid --deploy-hook "/usr/sbin/nginx -t && /bin/systemctl reload nginx"
+TimeoutStartSec=300

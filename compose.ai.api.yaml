@@ -1,0 +1,10 @@
+# Business owner applies this overlay when rebuilding API; never deploy it implicitly.
+# Use --env-file .env --env-file .ai.env for interpolation; API receives no provider key.
+services:
+  api:
+    volumes:
+      - ./runtime-config:/app/runtime-config:ro
+    environment:
+      RUNTIME_CONFIG_FILE: /app/runtime-config/config.json
+      AI_GATEWAY_URL: http://ai-gateway:8100
+      AI_GATEWAY_TOKEN: ${AI_GATEWAY_TOKEN:?Set AI_GATEWAY_TOKEN in private .ai.env}

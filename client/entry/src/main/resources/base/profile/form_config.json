@@ -1,0 +1,46 @@
+{
+  "forms": [
+    {
+      "name": "ExpiryCard",
+      "displayName": "先吃这些",
+      "description": "近期到期食材，点击检查详情",
+      "src": "./ets/forms/ExpiryCard.ets",
+      "uiSyntax": "arkts",
+      "window": {
+        "designWidth": 360,
+        "autoDesignWidth": true
+      },
+      "colorMode": "light",
+      "isDynamic": true,
+      "isDefault": true,
+      "updateEnabled": true,
+      "updateDuration": 1,
+      "defaultDimension": "2*2",
+      "supportDimensions": [
+        "2*2",
+        "2*4"
+      ]
+    },
+    {
+      "name": "ShoppingCard",
+      "displayName": "带回家",
+      "description": "采购清单，点击确认已购买",
+      "src": "./ets/forms/ShoppingCard.ets",
+      "uiSyntax": "arkts",
+      "window": {
+        "designWidth": 360,
+        "autoDesignWidth": true
+      },
+      "colorMode": "light",
+      "isDynamic": true,
+      "isDefault": false,
+      "updateEnabled": true,
+      "updateDuration": 1,
+      "defaultDimension": "2*2",
+      "supportDimensions": [
+        "2*2",
+        "2*4"
+      ]
+    }
+  ]
+}

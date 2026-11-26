@@ -1,0 +1,12 @@
+[Unit]
+Description=Kaifan bounded service and certificate health checks
+After=docker.service nginx.service
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/kaifan/scripts/cloud/server-watch.py
+TimeoutStartSec=100
+Nice=10
+PrivateTmp=true
+NoNewPrivileges=true
+StandardOutput=journal
+StandardError=journal

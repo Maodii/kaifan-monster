@@ -1,0 +1,37 @@
+# Add after compose.yaml and compose.app.yaml; tuned for this 2-vCPU/4-GiB trial host.
+# All API/database/object-store ports remain bound to 127.0.0.1 in the base files.
+services:
+  postgres:
+    mem_limit: 768m
+    cpus: 0.75
+    command: ["postgres", "-c", "shared_buffers=128MB", "-c", "work_mem=4MB", "-c", "max_connections=40"]
+    logging: &bounded_logs
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+  redis:
+    mem_limit: 192m
+    cpus: 0.25
+    command: ["sh", "-c", "exec redis-server --appendonly yes --maxmemory 96mb --maxmemory-policy noeviction --requirepass \"$$REDIS_PASSWORD\""]
+    logging: *bounded_logs
+  minio:
+    mem_limit: 512m
+    cpus: 0.5
+    environment:
+      GOMEMLIMIT: 384MiB
+    logging: *bounded_logs
+    healthcheck:
+      test: [CMD, bash, -ec, 'exec 3<>/dev/tcp/127.0.0.1/9000; printf "GET /minio/health/live HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n" >&3; IFS= read -r response <&3; [[ "$$response" == *" 200 "* ]]']
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+  api:
+    mem_limit: 1024m
+    cpus: 1.25
+    environment:
+      NODE_ENV: production
+      NODE_OPTIONS: --max-old-space-size=640
+      LOCAL_ADMIN_LOGIN: "true"
+    logging: *bounded_logs

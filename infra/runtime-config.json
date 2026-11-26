@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "ai": {
+    "limitsEnabled": false,
+    "perUserMinute": 3,
+    "perUserDay": 50,
+    "globalMinute": 10,
+    "globalDay": 500,
+    "maxConcurrency": 2,
+    "maxJobs": 64,
+    "dailyLimitEnabled": true,
+    "adminUserIds": []
+  }
+}

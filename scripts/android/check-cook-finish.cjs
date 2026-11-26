@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict');
+module.exports=async function(page,shot){
+ page.setDefaultTimeout(6500);
+ await page.evaluate(()=>{lobbyHost.visible=false;go('recipe-search')});
+ assert.equal(await page.locator('[data-action=assistantIntelligence]').count(),0);
+ assert.equal(await page.locator('.ingredient-shelves details').count(),4);
+ assert.equal(await page.locator('.ingredient-shelves [data-action=ingredient]').count(),12);
+ await page.locator('.ingredient-shelves summary').first().click();await shot('android-host-cook-search.png','食材搜索分组',false);
+ await page.locator('[data-action=ingredient][data-value=pork]').click();
+ const id=await page.evaluate(async()=>{const r=allRecipes().find(r=>r.name.includes('咕噜肉'));await actions('startGuide',r.id);return r.id});
+ const initial=await page.evaluate(()=>store.state.plans.length);
+ await page.locator('[data-action=stepComplete]').click();await page.waitForSelector('.step-stamp');assert.equal(await page.evaluate(()=>store.state.plans.length),initial);
+ await page.locator('[data-action=openCookClock]').click();assert(await page.locator('#cook-clock').evaluate(el=>el.open));
+ await page.locator('[data-action=quickTimer][data-value="5"]').click();await page.waitForSelector('.cook-countdown [data-deadline]');await shot('android-host-cook-timer.png','锅边倒计时与做菜操作区',false);
+ await page.locator('.cook-countdown [data-action=cancelTimer]').click();await page.waitForSelector('.cook-countdown',{state:'detached'});
+ for(let i=0;i<40 && !await page.locator('[data-action=finishCooking]').count();i++)await page.locator('.cook-controls [data-value="1"]').click();
+ await page.locator('[data-action=finishCooking]').click();await page.waitForSelector('.cook-receipt');
+ await page.evaluate(async()=>{await Promise.all([actions('finishCooking'),actions('finishCooking')])});
+ assert.equal(await page.evaluate(()=>store.state.plans.length),initial+1);
+ const meal=await page.evaluate(()=>{const p=store.state.plans.at(-1);return {date:p.date,occasion:p.occasion,recipe:p.recipeId,today:M.dateString(new Date()),expected:mealAtHour(new Date().getHours())}});assert.equal(meal.recipe,id);assert.equal(meal.today,meal.date);assert.equal(meal.expected,meal.occasion);
+ assert.deepEqual(await page.evaluate(()=>[0,10,11,16,17,23].map(mealAtHour)),['早餐','早餐','午餐','午餐','晚餐','晚餐']);
+ await page.reload();await page.waitForFunction(()=>!!window.__kaifan);await page.evaluate(()=>{lobbyHost.visible=false;go('today')});await page.locator('.meal-card [data-action=undoCookedPlan]').click();await page.waitForFunction(n=>store.state.plans.length===n,initial);
+ return ['All twelve ingredient filters reachable in four groups; search AI removed','Single step feedback leaves menu unchanged','Quick timer starts and stops in guide','Finishing puts one persistent item in local-date meal despite retries','Meal cutoffs and undo from Today after reopening verified'];
+};

@@ -1,0 +1,15 @@
+import { AssistantGeneratedRecipe, AssistantEstimate, AssistantResult, AssistantWebSource } from './AssistantCore';
+import { Meal, MealItem, Recipe, Ingredient, RecipeSource, UNITS } from './Models';
+function range(low:number,high:number,max:number):boolean{return Number.isFinite(low)&&Number.isFinite(high)&&low>=0&&high>=low&&high<=max;}
+function midpoint(low:number,high:number):number{return Math.round((low+high)*50)/100;}
+export function intelligenceEstimateLabel(e:AssistantEstimate):string{return e.kcalMin+'–'+e.kcalMax+' 大卡 · 蛋白质 '+e.proteinMin+'–'+e.proteinMax+'g · ¥'+e.costMin+'–'+e.costMax;}
+export function intelligenceMeal(e:AssistantEstimate):Meal{
+ if(!e||typeof e.name!=='string'||!e.name.trim()||e.name.length>60||!range(e.kcalMin,e.kcalMax,10000)||!range(e.proteinMin,e.proteinMax,500)||!range(e.costMin,e.costMax,3000)||!Array.isArray(e.assumptions)){throw new Error('估算草稿无效，请重新生成');}
+ const m:Meal=new Meal();m.name=e.name;m.date=new Date().toISOString();m.calories=Math.round(midpoint(e.kcalMin,e.kcalMax));m.calorieSource='AI估算';m.energyReference=m.calories;m.protein=midpoint(e.proteinMin,e.proteinMax);m.proteinSource='AI估算';m.estimatedCost=midpoint(e.costMin,e.costMax);m.costType='估算';m.items=[new MealItem(m.name,m.estimatedCost)];m.notes='AI估算，非检测/实付。'+intelligenceEstimateLabel(e)+'。份量：'+e.portion+'。假设：'+e.assumptions.join('；');m.aiEstimateRange=JSON.stringify(e);return m;
+}
+export function intelligenceRecipe(d:AssistantGeneratedRecipe,sources:AssistantWebSource[]=[]):Recipe{
+ if(!d||typeof d.name!=='string'||!d.name.trim()||d.name.length>60||!Number.isInteger(d.people)||d.people<1||d.people>12||!Number.isFinite(d.minutes)||d.minutes<=0||d.minutes>180||!Array.isArray(d.ingredients)||!d.ingredients.length||d.ingredients.length>20||!Array.isArray(d.steps)||d.steps.length<2||d.steps.length>12||!Array.isArray(d.assumptions)||d.assumptions.length<1||d.assumptions.length>5||!d.assumptions.every((v:string)=>typeof v==='string'&&v.length<=120)||!d.steps.every((v:string)=>typeof v==='string'&&v.length>0&&v.length<=240)||!range(d.costMin,d.costMax,3000)||!range(d.kcalMin,d.kcalMax,10000)||!range(d.proteinMin,d.proteinMax,500)){throw new Error('做法草稿无效，请重新生成');}
+ const r:Recipe=new Recipe();r.name=d.name;r.people=d.people;r.minutes=d.minutes;r.cookMinutes=Math.max(1,d.minutes-5);r.estimatedCost=midpoint(d.costMin,d.costMax);r.calories=Math.round(midpoint(d.kcalMin,d.kcalMax));r.protein=midpoint(d.proteinMin,d.proteinMax);r.caloriesSource='AI估算';r.sourceName='AI整理';r.sourceLicense='AI生成做法，需自行核对';r.steps=d.steps.slice();r.tips='费用约 ¥'+d.costMin+'–'+d.costMax+' / 整道；营养按每人估算。假设：'+d.assumptions.join('；');
+ r.ingredients=d.ingredients.map((i)=>{if(typeof i.name!=='string'||!i.name.trim()||!Number.isFinite(i.quantity)||i.quantity<=0||!UNITS.includes(i.unit)){throw new Error('请核对用料单位与数量');}return new Ingredient(i.name,i.quantity,i.unit);});
+ r.referenceSources=sources.slice(0,6).filter((s:AssistantWebSource)=>/^https:\/\//.test(s.url)).map((s:AssistantWebSource)=>{const source:RecipeSource=new RecipeSource();source.url=s.url;source.platform=s.title;return source;});return r;
+}

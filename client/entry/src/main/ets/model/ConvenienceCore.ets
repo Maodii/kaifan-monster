@@ -1,0 +1,12 @@
+import { Food, Shopping, Meal, Recipe, unitFactor } from './Models';
+import { canonicalName } from './RecommendationCore';
+import { purchaseCost } from './UsabilityCore';
+export const ENERGY_SOURCES:string[]=['手动估算','包装标签','称重计算','菜谱推算','AI估算'];
+export class EnergyPortion {referenceKcal:number=-1;fraction:number=1;source:string='手动估算';}
+export function consumedEnergy(value:EnergyPortion):number{if(!Number.isFinite(value.referenceKcal)||value.referenceKcal<0||value.referenceKcal>30000||!Number.isFinite(value.fraction)||value.fraction<=0||value.fraction>1||!ENERGY_SOURCES.includes(value.source)){throw new Error('请核对整份热量、食用比例和来源');}return Math.round(value.referenceKcal*value.fraction);}
+export class PurchaseInsight {stock:number=0;lastDate:string='';lastUnitPrice:number=-1;unit:string='';}
+export function purchaseInsight(item:Shopping,foods:Food[]):PurchaseInsight{const out:PurchaseInsight=new PurchaseInsight();out.unit=item.unit;const matches:Food[]=foods.filter((f:Food)=>canonicalName(f.name)===canonicalName(item.name));for(const f of matches){if(!f.archived){out.stock+=f.quantity*unitFactor(f.unit,item.unit);}}out.stock=Math.round(out.stock*100)/100;const last:Food|undefined=matches.filter((f:Food)=>Boolean(f.purchasedAt)).sort((a:Food,b:Food)=>b.purchasedAt.localeCompare(a.purchasedAt))[0];if(last){out.lastDate=last.purchasedAt;const qty:number=last.purchasedQuantity*unitFactor(last.unit,item.unit);if(qty>0){out.lastUnitPrice=Math.round(purchaseCost(last)/qty*100)/100;}}return out;}
+export class TemporarySkip {recipeId:string='';intent:string='cook';until:number=0;}
+export function activeSkips(rows:TemporarySkip[],intent:string,now:number):string[]{return rows.filter((r:TemporarySkip)=>r.intent===intent&&r.until>now).map((r:TemporarySkip)=>r.recipeId);}
+export class RecipeAudit {issues:string[]=[];priority:number=0;}
+export function auditRecipe(recipe:Recipe):RecipeAudit{const out:RecipeAudit=new RecipeAudit();if(!recipe.steps.length){out.issues.push('缺少做法');}if(recipe.steps.some((s:string)=>s.length<8)){out.issues.push('步骤过简');}if(!recipe.steps.some((s:string)=>/熟|凝固|透明|变色|软|浓稠|沸|金黄/.test(s))){out.issues.push('缺少完成判断');}if(!recipe.steps.some((s:string)=>/火|蒸|煮|烤|炖|炒/.test(s))){out.issues.push('缺少火候描述');}if(!(recipe.prepMinutes>0&&recipe.cookMinutes>0)){out.issues.push('备菜与烹饪时间未拆分');}if(recipe.ingredients.some((i)=>!i.optional&&i.quantity<=0)){out.issues.push('主料量待核实');}out.priority=out.issues.length;return out;}

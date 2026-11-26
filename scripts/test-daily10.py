@@ -1,0 +1,13 @@
+import subprocess,pathlib,time,json,os
+root=pathlib.Path(__file__).resolve().parent.parent
+cases=[('daily10-core',['node','test/daily10-core.cjs']),('daily10-api',['node','--env-file=../.env','--import','tsx','test/daily10.integration.ts']),('next10-core',['node','test/next10-core.cjs']),('next10-api',['node','--env-file=../.env','--import','tsx','test/next10.integration.ts']),('next20-core',['node','test/next20-core.cjs']),('workspace-api',['node','--env-file=../.env','--import','tsx','test/workspace.integration.ts']),
+ ('local-plans',['node','test/local-meal-plans.cjs']),('experience-workflow',['node','test/experience-workflow.cjs']),('local-account-spaces',['node','test/local-account-spaces.cjs']),('local-stock-history',['node','test/local-stock-history.cjs']),('utility-state',['node','test/utility-state.cjs']),('daily-experience',['node','test/daily-experience.cjs']),('catalog-update-client',['node','test/catalog-update-client.cjs']),
+ ('kitchen-workflow',['node','--import','tsx','test/kitchen-workflow.test.ts']),('personalization',['node','--import','tsx','test/personalization.test.ts']),('recipe-filter',['node','--import','tsx','test/recipe-filter.test.ts']),('portions',['node','--import','tsx','test/portions.test.ts']),('nutrition-discovery',['node','--import','tsx','test/discovery-enhancements.test.ts']),
+ ('catalog-delivery-api',['node','--env-file=../.env','--import','tsx','test/catalog-delivery.integration.ts']),('editorial-workflow-api',['node','--env-file=../.env','--import','tsx','test/editorial-workflow.integration.ts']),('social-pagination-claims',['node','--env-file=../.env','--import','tsx','test/social-pagination-claims.integration.ts']),('discovery-http',['node','--env-file=../.env','--import','tsx','test/discovery-http.integration.ts']),('api-sync',['node','--env-file=../.env','--import','tsx','test/api.integration.ts'])]
+results=[]
+for name,command in cases:
+ started=time.monotonic();p=subprocess.run(command,cwd=root/'backend',stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=180)
+ log=root/'work/reports'/('daily10-'+name+'.log');log.write_text(p.stdout);results.append({'name':name,'passed':p.returncode==0,'seconds':round(time.monotonic()-started,2),'log':str(log.relative_to(root))});print(('PASS ' if p.returncode==0 else 'FAIL ')+name,flush=True)
+ if p.returncode:print(p.stdout[-2000:],flush=True)
+report={'passed':all(r['passed'] for r in results),'cases':results,'nativeDeviceVerified':False};(root/'work/reports/daily10-tests.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+if not report['passed']:raise SystemExit(1)

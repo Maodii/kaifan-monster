@@ -1,0 +1,4 @@
+services:
+  ai-gateway:
+    image: kaifan-ai-ai-gateway:local
+    pull_policy: never

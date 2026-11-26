@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {parseGeneratedRecipe,parseMealEstimate} from '../src/assistant-intelligence';
+const data={name:'番茄鸡蛋汤',people:2,minutes:15,ingredients:[{name:'番茄',quantity:200,unit:'g'}],steps:['番茄切块，少油炒软。','加水煮开，淋蛋液至凝固。'],kcalMin:100,kcalMax:200,proteinMin:8,proteinMax:14,costMin:5,costMax:8,assumptions:['每人一碗，少油；地区价格有差异。'],url:'https://invented.invalid',id:'existing-id'};
+assert.ok(parseGeneratedRecipe('```json\n'+JSON.stringify(data)+'\n```',2,20,10));
+const draft=parseGeneratedRecipe(JSON.stringify(data),2)!;assert.equal('url' in draft,false);assert.equal('id' in draft,false);
+for(const patch of [{people:3},{minutes:30},{costMax:20},{ingredients:[{name:'番茄',quantity:-1,unit:'g'}]},{ingredients:[{name:'番茄',quantity:200,unit:'桶'}]},{steps:['<script>bad</script>','煮熟']},{proteinMax:-1},{assumptions:[]}])assert.equal(parseGeneratedRecipe(JSON.stringify({...data,...patch}),2,20,10),null);
+assert.equal(parseGeneratedRecipe('bad',2),null);
+assert.ok(parseMealEstimate(JSON.stringify({...data,portion:'一人一碗约300克'})));
+assert.equal(parseMealEstimate(JSON.stringify({...data,portion:'',kcalMin:500,kcalMax:100})),null);
+console.log('AI intelligence: structured ranges, constraints, fenced JSON, units, HTML rejection and discarded model identities passed');

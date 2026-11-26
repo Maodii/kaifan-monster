@@ -1,0 +1,22 @@
+// Verify migration boundaries: custom origins must never be silently replaced.
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const root=require('path').resolve(__dirname,'../..');
+const box={window:null};box.window=box;vm.createContext(box);
+vm.runInContext(fs.readFileSync(root+'/android/app/build/generated/assets/core.js','utf8'),box);
+const A=box.require('AuthInputCore'),checks=[];
+assert.equal(A.DEFAULT_SERVICE_ENDPOINT,'https://api.example.invalid');
+for(const old of ['', 'https://legacy.example.invalid', 'https://legacy.example.invalid/api/v1/', 'https://example.invalid','http://127.0.0.1:3000','http://127.0.0.1:13000','http://localhost:3001','http://10.0.2.2:3001'])assert.equal(A.automaticServiceEndpoint(old),A.DEFAULT_SERVICE_ENDPOINT);
+checks.push('Fresh installation and retired built-in loopback defaults use the same production HTTPS origin');
+for(const custom of ['https://private.example.com','https://private.example.com:8443','http://localhost:4567'])assert.equal(A.automaticServiceEndpoint(custom),custom);
+checks.push('Intentional custom origins are preserved');
+assert.equal(A.automaticServiceEndpoint(' https://api.example.invalid/api/v1/ '),A.DEFAULT_SERVICE_ENDPOINT);
+assert.equal(A.serviceOriginChanged('https://api.example.invalid/','https://api.example.invalid/api/v1'),false);
+assert.equal(A.serviceOriginChanged('http://localhost:13000',A.DEFAULT_SERVICE_ENDPOINT),true);
+assert.equal(A.serviceOriginChanged('https://a.example', 'https://b.example'),true);
+checks.push('Normalization avoids false logout; actual origin changes require clearing old session');
+const native=fs.readFileSync(root+'/client/entry/src/main/ets/pages/Index.ets','utf8'),android=fs.readFileSync(root+'/android/web/app.js','utf8');
+assert.ok(native.indexOf('automaticServiceEndpoint(savedEndpoint)')>=0 && native.indexOf('automaticServiceEndpoint(savedEndpoint)')<native.indexOf("const sessionText:string=this.cloudAllowed?await Vault.load():''"));
+assert.ok(android.indexOf('automaticServiceEndpoint(savedEndpoint)')>=0 && android.indexOf('automaticServiceEndpoint(savedEndpoint)')<android.indexOf('const saved = require("ReleaseLegal").PrivacyAccess.allowed ? await Vault.load() : ""'));
+checks.push('Both startup flows migrate endpoint and clear stale credentials before restoring a session');
+const report={passed:true,checks,scope:'Shared compiled ArkTS default/migration and startup wiring; public network and device tests separate'};
+fs.writeFileSync(root+'/work/reports/service-endpoint-unit.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));

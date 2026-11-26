@@ -1,0 +1,3 @@
+import { Database } from '../src/database';
+async function main():Promise<void>{const email=process.argv[2]?.trim().toLowerCase();if(!email||!email.includes('@'))throw new Error('Usage: node dist/scripts/promote-admin.js registered-email');const db=new Database();try{const rows=await db.query("UPDATE users SET role='admin' WHERE email=$1 RETURNING id",[email]);if(rows.length!==1)throw new Error('Registered user not found');console.log('Administrator role granted to the requested registered account.');}finally{await db.onModuleDestroy();}}
+main().catch(e=>{console.error(e);process.exitCode=1;});

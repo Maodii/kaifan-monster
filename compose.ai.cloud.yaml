@@ -1,0 +1,5 @@
+# Gateway project shares the existing business network without managing its lifecycle.
+networks:
+  default:
+    external: true
+    name: shiku_default

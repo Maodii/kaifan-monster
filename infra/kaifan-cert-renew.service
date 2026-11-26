@@ -1,0 +1,8 @@
+[Unit]
+Description=Renew Kaifan trusted IP TLS certificate
+Wants=network-online.target
+After=network-online.target nginx.service
+[Service]
+Type=oneshot
+ExecStart=/opt/kaifan/certbot-venv/bin/certbot renew --quiet --cert-name kaifan-ip --deploy-hook "/usr/sbin/nginx -t && /bin/systemctl reload nginx"
+TimeoutStartSec=900
