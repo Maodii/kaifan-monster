@@ -1,6 +1,6 @@
 # 开饭小怪独立官网
 
-独立工程，未修改客户端、后端、签名、网关或其他对话维护的文件。无运行依赖、外部 CDN、统计追踪或服务凭据。最新用户要求优先：官网不放安装包、安装指南、阶段字样或运营者展示。
+独立静态官网，无外部 CDN、统计追踪或服务凭据。2026-11-27 起根据用户要求加入华为应用市场链接与已核验的正式 Android APK 下载；不显示阶段字样或运营者。
 
 ## 预览与部署
 
@@ -12,7 +12,7 @@ npm run build
 
 预览：http://127.0.0.1:4178 。默认仅监听本机；可用 WEBSITE_PORT 调端口。
 
-部署只使用 website/dist/，支持根域和子路径。build 原地更新唯一 dist，无需安装依赖，不复制项目或 outputs。产物只含网站所需 HTML/CSS/JS、字体与品牌资源，约 2MB，不包含任何安装包、密钥或业务配置。_headers 提供 CSP、权限与 MIME 防护；不支持该格式的托管平台需映射同等响应头。尚未改任何公网配置。
+部署只使用 website/dist/，以根域部署。build 原地更新唯一 dist，无需安装依赖，不复制项目或 outputs。产物包含网站所需 HTML/CSS/JS、字体与品牌资源，以及 release.json 允许的单个签名 APK；不包含密钥或业务配置。_headers 提供 CSP、权限与 MIME 防护；不支持该格式的托管平台需映射同等响应头。网站已部署公网 HTTPS，详情见 DEPLOYMENT.md。
 
 自有域名 `site.example.invalid` 的阿里云解析、服务器准备与备案通过后的启用步骤见 [DEPLOYMENT.md](DEPLOYMENT.md)。当前文件已准备到独立服务器目录；备案审核期间未启用域名站点。域名启用后以 HTTPS 为规范地址，www 跳转根域名。
 
@@ -41,3 +41,5 @@ npm run build
 - work/screenshots/official-site-mobile.png
 
 无头 Chromium 验证不代替 Safari、Android/HarmonyOS 真机或设备 GPU 性能验收。无全项目备份、无历史构建版本。
+
+正式下载：先执行 `python3 website/scripts/verify-download.py` 核验双方实际安装包，再构建。完整预览用 `WEBSITE_SERVE_DIST=1 node website/scripts/serve.mjs`；测试下载适配用 `node website/scripts/check-release.mjs`。

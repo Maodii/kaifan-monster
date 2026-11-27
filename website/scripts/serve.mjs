@@ -1,8 +1,9 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
-import { publicRoot } from './paths.mjs';
-const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.webp':'image/webp','.ttf':'font/ttf','.xml':'application/xml; charset=utf-8','.txt':'text/plain; charset=utf-8'};
+import { publicRoot as sourceRoot, siteRoot } from './paths.mjs';
+const publicRoot=process.env.WEBSITE_SERVE_DIST==='1'?path.join(siteRoot,'dist'):sourceRoot;
+const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.webp':'image/webp','.jpg':'image/jpeg','.svg':'image/svg+xml','.apk':'application/vnd.android.package-archive','.ttf':'font/ttf','.xml':'application/xml; charset=utf-8','.txt':'text/plain; charset=utf-8'};
 export const securityHeaders = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",'Permissions-Policy':'camera=(), microphone=(), geolocation=()'};
 const server = http.createServer((req,res) => {
   for (const [k,v] of Object.entries(securityHeaders)) res.setHeader(k,v);

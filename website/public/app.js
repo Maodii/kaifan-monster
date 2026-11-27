@@ -95,7 +95,7 @@ document.querySelectorAll('.faq-list details').forEach(detail=>detail.querySelec
 
 const progress=document.createElement('div');progress.className='nav-progress';progress.setAttribute('aria-hidden','true');document.querySelector('.header').append(progress);
 const sectionIndex=document.createElement('nav');sectionIndex.className='section-index';sectionIndex.setAttribute('aria-label','页面章节');
-const chapters=[['main','你好，小怪'],['features','三餐小事'],['preview','逛逛应用'],['guide','从这里开始'],['faq','想问小怪']];
+const chapters=[['main','你好，小怪'],['features','三餐小事'],['preview','逛逛应用'],['guide','从这里开始'],['download','下载小怪'],['faq','想问小怪']];
 sectionIndex.innerHTML=chapters.map(([id,title])=>`<a href="#${id}" aria-label="${title}"><span>${title}</span></a>`).join('');document.body.append(sectionIndex);
 const backToTop=document.createElement('a');backToTop.className='back-to-top';backToTop.href='#';backToTop.setAttribute('aria-label','回到页面顶部');backToTop.textContent='↑';backToTop.tabIndex=-1;document.body.append(backToTop);
 let scrollFrame=0;
@@ -111,3 +111,19 @@ document.querySelectorAll('.button').forEach(button=>{
   button.addEventListener('pointermove',event=>{if(!matchMedia('(pointer:fine)').matches||matchMedia('(prefers-reduced-motion:reduce)').matches)return;const r=button.getBoundingClientRect();button.style.setProperty('--magnet-x',`${((event.clientX-r.left)/r.width-.5)*5}px`);button.style.setProperty('--magnet-y',`${((event.clientY-r.top)/r.height-.5)*4}px`);});
   button.addEventListener('pointerleave',()=>{button.style.setProperty('--magnet-x','0px');button.style.setProperty('--magnet-y','0px');});
 });
+
+// Explicit HTTPS store navigation supports AppGallery's own device routing and a web fallback.
+// No automatic protocol launch or forced APK download on an unknown device.
+const agent=navigator.userAgent;
+const harmonyDevice=/HarmonyOS|OpenHarmony|ArkWeb/i.test(agent);
+const androidDevice=/Android/i.test(agent)&&!harmonyDevice;
+const iosDevice=/iPhone|iPad|iPod/i.test(agent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const embeddedBrowser=/MicroMessenger|QQ\//i.test(agent);
+const storeLink=document.querySelector('#appgallery-link');
+if(storeLink){
+  const primary=harmonyDevice?storeLink:androidDevice?document.querySelector('#android-download'):null;
+  if(primary){primary.closest('.release-card').classList.add('is-recommended');document.querySelector('#platform-hint').textContent=harmonyDevice?'鸿蒙设备，推荐从华为应用市场安装。':'安卓设备，可从官网下载 APK。';}
+  if(!harmonyDevice&&!androidDevice&&!iosDevice){storeLink.target='_blank';}
+  if(iosDevice)document.querySelector('#platform-hint').textContent='当前设备为 iPhone 或 iPad，可浏览介绍；安装请使用鸿蒙或安卓设备。';
+  if(embeddedBrowser)document.querySelector('#download-guidance').textContent='当前为应用内浏览器。如无法跳转或下载，请点击右上角菜单，选择在系统浏览器打开。';
+}

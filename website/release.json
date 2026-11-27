@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "verifiedAt": "2026-11-27T01:36:20.790222+00:00",
+  "version": "0.9.37",
+  "versionCode": 55,
+  "package": "com.kaifan.monster",
+  "minAndroid": "8.0",
+  "source": "outputs/kaifan-monster-android-release.apk",
+  "url": "/downloads/kaifan-monster-0.9.37-android.apk",
+  "bytes": 50487252,
+  "sha256": "17172f8a209c2ee661e7530a0c7cb965eadb0639b3b3a1de4e434146d637d0c0",
+  "harmonySource": "outputs/kaifan-monster-harmony-release.app",
+  "harmonySha256": "dd24e2ab06b344c03b43e2db4e77b48ff877f9046c21f5169f3e9d136431446c",
+  "appGalleryUrl": "https://appgallery.huawei.com/app/detail?id=com.shiku.foodkeeper",
+  "signatures": [
+    "v2",
+    "v3"
+  ],
+  "debuggable": false,
+  "certificateSha256": "c5508b8e5cb4447b7862cc3b373843d597fc25a71a611f4a70f0a0882a0f3df5",
+  "checks": [
+    "Actual Android and Harmony package versions match",
+    "Release v2/v3 signature verified",
+    "Packaged Android UI, shared models, catalog and legal configuration match current sources"
+  ],
+  "limitations": [
+    "No physical device installation verified",
+    "Public AppGallery desktop page does not expose the listed version"
+  ]
+}

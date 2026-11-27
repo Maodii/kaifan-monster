@@ -23,7 +23,7 @@ fi
 install -d -m 755 "$site/public" "$site/deploy"
 touch "$site/.managed-by-kaifanghost-website"'
 printf -v ssh_command '%q ' ssh "${ssh_args[@]}"
-rsync -az --no-owner --no-group --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r -e "$ssh_command" "$WEBSITE_DIR/dist/" "$HOST:$SITE/public/"
+rsync -azc --no-owner --no-group --delay-updates --delete-delay --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r -e "$ssh_command" "$WEBSITE_DIR/dist/" "$HOST:$SITE/public/"
 rsync -az --no-owner --no-group --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r -e "$ssh_command" "$WEBSITE_DIR/deploy/" "$HOST:$SITE/deploy/"
 ssh "${ssh_args[@]}" "$HOST" 'chown -R root:root /var/www/site.example.invalid && python3 /var/www/site.example.invalid/deploy/verify-stage.py' > "$WEBSITE_DIR/../work/reports/official-site-server-stage.json"
 node --input-type=module -e 'import fs from "node:fs";const r=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));console.log(JSON.stringify({passed:r.passed,server:r.server,files:r.files.length,publicWebsiteEnabled:r.publicWebsiteEnabled,checks:r.checks},null,2))' "$WEBSITE_DIR/../work/reports/official-site-server-stage.json"

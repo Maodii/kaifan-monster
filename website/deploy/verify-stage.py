@@ -15,7 +15,12 @@ public = site / 'public'
 server = json.loads((deploy / 'server.json').read_text())['host']
 assert (site / '.managed-by-kaifanghost-website').is_file()
 files = sorted(p for p in public.rglob('*') if p.is_file())
-assert files and not any(p.suffix.lower() in {'.apk', '.app', '.hap', '.pem', '.p12', '.key'} for p in files)
+release = json.loads((public / 'downloads.json').read_text())
+assert re.fullmatch(r'/downloads/kaifan-monster-[\d.]+-android\.apk', release['url'])
+apk = public / release['url'].lstrip('/')
+assert apk.stat().st_size == release['bytes']
+assert hashlib.sha256(apk.read_bytes()).hexdigest() == release['sha256']
+assert files and not any(p.suffix.lower() in {'.app', '.hap', '.pem', '.p12', '.key'} or (p.suffix.lower() == '.apk' and p != apk) for p in files)
 assert not re.search(r'测试|提审|运营者|谢宇飞', (public / 'index.html').read_text())
 
 # Validate full production syntax against the existing certificate without copying any key.
@@ -58,7 +63,7 @@ try:
             raise AssertionError('Unexpectedly accessible: ' + path)
         except urllib.error.HTTPError as error:
             assert error.code == 404
-    checks.append('Private files, deployment files, app packages and unknown paths return 404')
+    checks.append('Only the allowlisted Android release is public; private files and other packages return 404')
     enabled = pathlib.Path('/etc/nginx/sites-enabled/kaifanghost-https').exists()
     if not enabled:
         assert not pathlib.Path('/etc/nginx/sites-enabled/kaifanghost-http').exists()
